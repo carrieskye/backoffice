@@ -41,7 +41,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="device_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_classification_device_id" />
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

@@ -1,6 +1,7 @@
 package me.larrycarodenis.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -53,7 +54,7 @@ public class Classification implements Serializable {
     private Emotion emotion;
 
     @ManyToOne
-    @JoinColumn(unique = true)
+    @JsonIgnoreProperties("classifications")
     private Device device;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

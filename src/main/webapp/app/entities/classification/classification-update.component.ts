@@ -36,30 +36,12 @@ export class ClassificationUpdateComponent implements OnInit {
             this.timestamp = this.classification.timestamp != null ? this.classification.timestamp.format(DATE_TIME_FORMAT) : null;
         });
         this.deviceService
-            .query({ filter: 'classification-is-null' })
+            .query()
             .pipe(
                 filter((mayBeOk: HttpResponse<IDevice[]>) => mayBeOk.ok),
                 map((response: HttpResponse<IDevice[]>) => response.body)
             )
-            .subscribe(
-                (res: IDevice[]) => {
-                    if (!this.classification.device || !this.classification.device.id) {
-                        this.devices = res;
-                    } else {
-                        this.deviceService
-                            .find(this.classification.device.id)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<IDevice>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<IDevice>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: IDevice) => (this.devices = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+            .subscribe((res: IDevice[]) => (this.devices = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

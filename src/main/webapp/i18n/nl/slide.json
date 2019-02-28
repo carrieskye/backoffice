@@ -1,0 +1,24 @@
+{
+    "backofficeApp": {
+        "slide": {
+            "home": {
+                "title": "Slides",
+                "createLabel": "Maak een nieuwe Slide",
+                "createOrEditLabel": "Maak of wijzig een Slide"
+            },
+            "created": "A new Slide is created with identifier {{ param }}",
+            "updated": "A Slide is updated with identifier {{ param }}",
+            "deleted": "A Slide is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Slide {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Slide"
+            },
+            "image": "Image",
+            "ageCategory": "Age Category",
+            "gender": "Gender",
+            "device": "Device"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "backofficeApp": {
+        "AgeCategory": {
+            "null": "",
+            "YOUNG": "YOUNG",
+            "ADULT": "ADULT"
+        }
+    }
+}

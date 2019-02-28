@@ -1,0 +1,26 @@
+{
+    "backofficeApp": {
+        "classification": {
+            "home": {
+                "title": "Classifications",
+                "createLabel": "Créer un nouveau Classification",
+                "createOrEditLabel": "Créer ou éditer un Classification"
+            },
+            "created": "Un nouveau Classification a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Classification avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Classification avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Classification {{ id }} ?"
+            },
+            "detail": {
+                "title": "Classification"
+            },
+            "personId": "Person Id",
+            "timestamp": "Timestamp",
+            "age": "Age",
+            "gender": "Gender",
+            "emotion": "Emotion",
+            "device": "Device"
+        }
+    }
+}

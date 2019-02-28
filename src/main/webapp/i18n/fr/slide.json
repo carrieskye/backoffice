@@ -1,0 +1,24 @@
+{
+    "backofficeApp": {
+        "slide": {
+            "home": {
+                "title": "Slides",
+                "createLabel": "Créer un nouveau Slide",
+                "createOrEditLabel": "Créer ou éditer un Slide"
+            },
+            "created": "Un nouveau Slide a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Slide avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Slide avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Slide {{ id }} ?"
+            },
+            "detail": {
+                "title": "Slide"
+            },
+            "image": "Image",
+            "ageCategory": "Age Category",
+            "gender": "Gender",
+            "device": "Device"
+        }
+    }
+}

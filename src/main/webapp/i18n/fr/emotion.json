@@ -1,0 +1,14 @@
+{
+    "backofficeApp": {
+        "Emotion": {
+            "null": "",
+            "ANGRY": "ANGRY",
+            "DISGUST": "DISGUST",
+            "FEAR": "FEAR",
+            "HAPPY": "HAPPY",
+            "SAD": "SAD",
+            "SURPRISE": "SURPRISE",
+            "NEUTRAL": "NEUTRAL"
+        }
+    }
+}

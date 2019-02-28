@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="classification">
+            <h2><span jhiTranslate="backofficeApp.classification.detail.title">Classification</span> {{classification.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="backofficeApp.classification.personId">Person Id</span></dt>
+                <dd>
+                    <span>{{classification.personId}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.classification.timestamp">Timestamp</span></dt>
+                <dd>
+                    <span>{{classification.timestamp}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.classification.age">Age</span></dt>
+                <dd>
+                    <span>{{classification.age}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.classification.gender">Gender</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'backofficeApp.Gender.' + classification.gender}}">{{classification.gender}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.classification.emotion">Emotion</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'backofficeApp.Emotion.' + classification.emotion}}">{{classification.emotion}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.classification.device">Device</span></dt>
+                <dd>
+                    <div *ngIf="classification.device">
+                        <a [routerLink]="['/device', classification.device?.id, 'view']">{{classification.device?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/classification', classification.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-classification-heading" jhiTranslate="backofficeApp.classification.home.createOrEditLabel">Create or edit a Classification</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!classification.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="classification.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="backofficeApp.classification.personId" for="field_personId">Person Id</label>
+                    <input type="text" class="form-control" name="personId" id="field_personId"
+                        [(ngModel)]="classification.personId" required/>
+                    <div [hidden]="!(editForm.controls.personId?.dirty && editForm.controls.personId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.personId?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="backofficeApp.classification.timestamp" for="field_timestamp">Timestamp</label>
+                    <div class="d-flex">
+                        <input id="field_timestamp" type="datetime-local" class="form-control" name="timestamp" [(ngModel)]="timestamp" placeholder="YYYY-MM-DD HH:mm"
+                        required/>
+                    </div>
+                    <div [hidden]="!(editForm.controls.timestamp?.dirty && editForm.controls.timestamp?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.timestamp?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.timestamp?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="backofficeApp.classification.age" for="field_age">Age</label>
+                    <input type="number" class="form-control" name="age" id="field_age"
+                        [(ngModel)]="classification.age" required/>
+                    <div [hidden]="!(editForm.controls.age?.dirty && editForm.controls.age?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.age?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.age?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="backofficeApp.classification.gender" for="field_gender">Gender</label>
+                    <select class="form-control" name="gender" [(ngModel)]="classification.gender" id="field_gender"  required>
+                        <option value="MALE">{{'backofficeApp.Gender.MALE' | translate}}</option>
+                        <option value="FEMALE">{{'backofficeApp.Gender.FEMALE' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.gender?.dirty && editForm.controls.gender?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.gender?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="backofficeApp.classification.emotion" for="field_emotion">Emotion</label>
+                    <select class="form-control" name="emotion" [(ngModel)]="classification.emotion" id="field_emotion"  required>
+                        <option value="ANGRY">{{'backofficeApp.Emotion.ANGRY' | translate}}</option>
+                        <option value="DISGUST">{{'backofficeApp.Emotion.DISGUST' | translate}}</option>
+                        <option value="FEAR">{{'backofficeApp.Emotion.FEAR' | translate}}</option>
+                        <option value="HAPPY">{{'backofficeApp.Emotion.HAPPY' | translate}}</option>
+                        <option value="SAD">{{'backofficeApp.Emotion.SAD' | translate}}</option>
+                        <option value="SURPRISE">{{'backofficeApp.Emotion.SURPRISE' | translate}}</option>
+                        <option value="NEUTRAL">{{'backofficeApp.Emotion.NEUTRAL' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.emotion?.dirty && editForm.controls.emotion?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.emotion?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="backofficeApp.classification.device" for="field_device">Device</label>
+                    <select class="form-control" id="field_device" name="device" [(ngModel)]="classification.device">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="deviceOption.id === classification.device?.id ? classification.device : deviceOption" *ngFor="let deviceOption of devices; trackBy: trackDeviceById">{{deviceOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

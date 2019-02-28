@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="slide">
+            <h2><span jhiTranslate="backofficeApp.slide.detail.title">Slide</span> {{slide.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="backofficeApp.slide.image">Image</span></dt>
+                <dd>
+                    <div *ngIf="slide.image">
+                        <a (click)="openFile(slide.imageContentType, slide.image)">
+                            <img [src]="'data:' + slide.imageContentType + ';base64,' + slide.image" style="max-width: 100%;" alt="slide image"/>
+                        </a>
+                        {{slide.imageContentType}}, {{byteSize(slide.image)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.slide.ageCategory">Age Category</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'backofficeApp.AgeCategory.' + slide.ageCategory}}">{{slide.ageCategory}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.slide.gender">Gender</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'backofficeApp.Gender.' + slide.gender}}">{{slide.gender}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.slide.device">Device</span></dt>
+                <dd>
+                    <span *ngFor="let device of slide.devices; let last = last">
+                        <a [routerLink]="['/device', device?.id, 'view' ]">{{device.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/slide', slide.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

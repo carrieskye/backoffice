@@ -1,0 +1,44 @@
+{
+    "name": "Device",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "postalCode",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "homepage",
+            "otherEntityName": "homePage",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "device"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "slide",
+            "otherEntityName": "slide",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "device"
+        }
+    ],
+    "changelogDate": "20190228102337",
+    "entityTableName": "device",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

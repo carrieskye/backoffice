@@ -1,0 +1,26 @@
+{
+    "backofficeApp": {
+        "classification": {
+            "home": {
+                "title": "Classifications",
+                "createLabel": "Maak een nieuwe Classification",
+                "createOrEditLabel": "Maak of wijzig een Classification"
+            },
+            "created": "A new Classification is created with identifier {{ param }}",
+            "updated": "A Classification is updated with identifier {{ param }}",
+            "deleted": "A Classification is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Classification {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Classification"
+            },
+            "personId": "Person Id",
+            "timestamp": "Timestamp",
+            "age": "Age",
+            "gender": "Gender",
+            "emotion": "Emotion",
+            "device": "Device"
+        }
+    }
+}

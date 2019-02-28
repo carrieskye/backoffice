@@ -1,0 +1,25 @@
+{
+    "backofficeApp": {
+        "homePage": {
+            "home": {
+                "title": "Home Pages",
+                "createLabel": "Maak een nieuwe Home Page",
+                "createOrEditLabel": "Maak of wijzig een Home Page"
+            },
+            "created": "A new Home Page is created with identifier {{ param }}",
+            "updated": "A Home Page is updated with identifier {{ param }}",
+            "deleted": "A Home Page is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Home Page {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Home Page"
+            },
+            "name": "Name",
+            "youngMaleUrl": "Young Male Url",
+            "youngFemaleUrl": "Young Female Url",
+            "adultMaleUrl": "Adult Male Url",
+            "adultFemaleUrl": "Adult Female Url"
+        }
+    }
+}

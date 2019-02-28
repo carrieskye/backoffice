@@ -1,0 +1,62 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="backofficeApp.homePage.home.title">Home Pages</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-home-page" [routerLink]="['/home-page/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="backofficeApp.homePage.home.createLabel">
+            Create new Home Page
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="homePages">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="backofficeApp.homePage.name">Name</span></th>
+            <th><span jhiTranslate="backofficeApp.homePage.youngMaleUrl">Young Male Url</span></th>
+            <th><span jhiTranslate="backofficeApp.homePage.youngFemaleUrl">Young Female Url</span></th>
+            <th><span jhiTranslate="backofficeApp.homePage.adultMaleUrl">Adult Male Url</span></th>
+            <th><span jhiTranslate="backofficeApp.homePage.adultFemaleUrl">Adult Female Url</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let homePage of homePages ;trackBy: trackId">
+                <td><a [routerLink]="['/home-page', homePage.id, 'view' ]">{{homePage.id}}</a></td>
+                <td>{{homePage.name}}</td>
+                <td>{{homePage.youngMaleUrl}}</td>
+                <td>{{homePage.youngFemaleUrl}}</td>
+                <td>{{homePage.adultMaleUrl}}</td>
+                <td>{{homePage.adultFemaleUrl}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/home-page', homePage.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/home-page', homePage.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'home-page', { outlets: { popup: homePage.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

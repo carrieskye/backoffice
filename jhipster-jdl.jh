@@ -1,0 +1,51 @@
+entity Device {
+	name String required
+    postalCode Integer required
+}
+relationship ManyToOne {
+	Device{homepage} to HomePage
+}
+entity HomePage {
+	name String required
+    youngMaleUrl String required
+    youngFemaleUrl String required
+    adultMaleUrl String required
+    adultFemaleUrl String required
+}
+
+relationship ManyToMany {
+	Slide{device} to Device{slide}
+}
+
+
+entity Slide {
+	image ImageBlob required
+    ageCategory AgeCategory required
+    gender Gender required
+}
+
+entity Classification {
+	personId String required
+	timestamp Instant required
+    age Integer required
+    gender Gender required
+    emotion Emotion required
+}
+relationship OneToOne {
+	Classification{device} to Device
+}
+enum AgeCategory {
+	YOUNG, ADULT
+}
+enum Gender {
+    MALE, FEMALE
+}
+enum Emotion {
+    ANGRY,
+    DISGUST,
+    FEAR,
+    HAPPY,
+    SAD,
+    SURPRISE,
+    NEUTRAL
+}

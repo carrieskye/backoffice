@@ -16,6 +16,8 @@ import { BackofficeCoreModule } from 'app/core';
 import { BackofficeAppRoutingModule } from './app-routing.module';
 import { BackofficeHomeModule } from './home/home.module';
 import { BackofficeAccountModule } from './account/account.module';
+import { BackOfficeGraphsModule } from './graphs/graphs.module';
+import { BackOfficeGeneralModule } from './graphs/general/general.module';
 import { BackofficeEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
@@ -38,7 +40,9 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         BackofficeAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         BackofficeEntityModule,
-        BackofficeAppRoutingModule
+        BackofficeAppRoutingModule,
+        BackOfficeGraphsModule,
+        BackOfficeGeneralModule
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
     providers: [

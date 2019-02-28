@@ -28,7 +28,7 @@
                 <td>{{device.postalCode}}</td>
                 <td>
                     <div *ngIf="device.homepage">
-                        <a [routerLink]="['../home-page', device.homepage?.id, 'view' ]" >{{device.homepage?.id}}</a>
+                        <a [routerLink]="['../home-page', device.homepage?.id, 'view' ]" >{{device.homepage?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

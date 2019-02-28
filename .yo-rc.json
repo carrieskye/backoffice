@@ -1,0 +1,38 @@
+{
+    "generator-jhipster": {
+        "promptValues": {
+            "packageName": "me.larrycarodenis",
+            "nativeLanguage": "en"
+        },
+        "jhipsterVersion": "5.8.1",
+        "applicationType": "monolith",
+        "baseName": "backoffice",
+        "packageName": "me.larrycarodenis",
+        "packageFolder": "me/larrycarodenis",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "cacheProvider": "ehcache",
+        "enableHibernateCache": true,
+        "websocket": "spring-websocket",
+        "databaseType": "sql",
+        "devDatabaseType": "h2Disk",
+        "prodDatabaseType": "postgresql",
+        "searchEngine": false,
+        "messageBroker": false,
+        "serviceDiscoveryType": false,
+        "buildTool": "gradle",
+        "enableSwaggerCodegen": false,
+        "jwtSecretKey": "MGY4YzIwNGViZjY1MTA1YTU0MDQ0OWZlZTQwYTJjZWJhMWUxZTEyMTNkMmU4Njc4YmVlZTQ4NmU0M2RhM2ExYmFjMjE1NWE2OGNmMGM3ODM3ZjA3MGE2NzAzYzA3NzkwMTQwODYxNWU1OTIxNTc2ODEzZmY3NTk1NjMzMDI1NGU=",
+        "clientFramework": "angularX",
+        "useSass": true,
+        "clientPackageManager": "npm",
+        "testFrameworks": ["protractor"],
+        "jhiPrefix": "jhi",
+        "entitySuffix": "",
+        "dtoSuffix": "DTO",
+        "otherModules": [],
+        "enableTranslation": true,
+        "nativeLanguage": "en",
+        "languages": ["en", "nl", "fr"]
+    }
+}

@@ -1,0 +1,11 @@
+version: '2'
+services:
+    backoffice-postgresql:
+        image: postgres:10.4
+        # volumes:
+        #     - ~/volumes/jhipster/backoffice/postgresql/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=backoffice
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432

@@ -52,7 +52,7 @@ public class Classification implements Serializable {
     @Column(name = "emotion", nullable = false)
     private Emotion emotion;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(unique = true)
     private Device device;
 
@@ -173,6 +173,7 @@ public class Classification implements Serializable {
             ", age=" + getAge() +
             ", gender='" + getGender() + "'" +
             ", emotion='" + getEmotion() + "'" +
+            ", device='" + getDevice() + "'" +
             "}";
     }
 }

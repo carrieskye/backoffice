@@ -1,5 +1,7 @@
 package me.larrycarodenis.web.rest;
+import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.Device;
+import me.larrycarodenis.repository.ClassificationRepository;
 import me.larrycarodenis.repository.DeviceRepository;
 import me.larrycarodenis.web.rest.errors.BadRequestAlertException;
 import me.larrycarodenis.web.rest.util.HeaderUtil;
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +32,11 @@ public class DeviceResource {
 
     private final DeviceRepository deviceRepository;
 
-    public DeviceResource(DeviceRepository deviceRepository) {
+    private final ClassificationRepository classificationReposistory;
+
+    public DeviceResource(DeviceRepository deviceRepository, ClassificationRepository classificationReposistory) {
         this.deviceRepository = deviceRepository;
+        this.classificationReposistory = classificationReposistory;
     }
 
     /**
@@ -50,6 +56,20 @@ public class DeviceResource {
         return ResponseEntity.created(new URI("/api/devices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @PostMapping("/devices/{id}/export")
+    public ResponseEntity<Classification> saveClassification(@PathVariable Long id, @RequestBody ArrayList<Classification> data)
+    {
+        for(Classification classification : data)
+        {
+            Device device = deviceRepository.findById(id).get();
+            classification.setDevice(device);
+            System.out.println("classification:");
+            System.out.println(classification.toString());
+            classificationReposistory.save(classification);
+        }
+        return null;
     }
 
     /**

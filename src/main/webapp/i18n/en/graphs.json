@@ -1,0 +1,12 @@
+{
+    "backofficeApp": {
+        "graphs": {
+            "general": {
+                "title": "General graphs"
+            },
+            "stores": {
+                "title": "Graphs per store"
+            }
+        }
+    }
+}

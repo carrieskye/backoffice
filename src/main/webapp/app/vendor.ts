@@ -80,4 +80,7 @@ library.add(faUser);
 library.add(faUserPlus);
 library.add(faWrench);
 
+// add ng2-charts chart.js
+import 'chart.js/src/chart.js';
+
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

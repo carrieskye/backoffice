@@ -4,22 +4,22 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
 import { BackofficeSharedModule } from 'app/shared';
-import { DemoComponent, generalRoute } from './';
+import { DemoComponent, storesRoute } from './';
 
 import { ChartsModule } from 'ng2-charts';
 import { ActivityComponent } from './activity/activity.component';
-import { GeneralComponent } from './general.component';
+import { StoresComponent } from './stores.component';
 
-const GRAPH_STATES = [...generalRoute];
+const GRAPH_STATES = [...storesRoute];
 
 @NgModule({
     imports: [BackofficeSharedModule, ChartsModule, RouterModule.forChild(GRAPH_STATES)],
-    declarations: [GeneralComponent, DemoComponent, ActivityComponent],
-    entryComponents: [GeneralComponent],
+    declarations: [StoresComponent, DemoComponent, ActivityComponent],
+    entryComponents: [StoresComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class BackOfficeGeneralModule {
+export class BackOfficeStoresModule {
     constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
         this.languageHelper.language.subscribe((languageKey: string) => {
             if (languageKey !== undefined) {

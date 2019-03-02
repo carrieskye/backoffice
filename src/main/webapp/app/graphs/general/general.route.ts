@@ -4,9 +4,9 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@a
 import { UserRouteAccessService } from 'app/core';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { DemoComponent } from 'app/graphs/general/demo.component';
 import { ClassificationService } from 'app/entities/classification';
 import { Classification, IClassification } from 'app/shared/model/classification.model';
+import { GeneralComponent } from 'app/graphs/general/general.component';
 
 @Injectable({ providedIn: 'root' })
 export class GeneralResolve implements Resolve<IClassification> {
@@ -27,7 +27,7 @@ export class GeneralResolve implements Resolve<IClassification> {
 export const generalRoute: Routes = [
     {
         path: '',
-        component: DemoComponent,
+        component: GeneralComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'backofficeApp.graphs.general.demo'

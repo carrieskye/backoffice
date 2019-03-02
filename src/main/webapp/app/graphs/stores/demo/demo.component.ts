@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'jhi-general',
+    selector: 'jhi-stores-demo',
     templateUrl: './demo.component.html',
     styles: []
 })

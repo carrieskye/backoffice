@@ -7,13 +7,15 @@ import { BackofficeSharedModule } from 'app/shared';
 import { DemoComponent, generalRoute } from './';
 
 import { ChartsModule } from 'ng2-charts';
+import { ActivityComponent } from './activity/activity.component';
+import { GeneralComponent } from './general.component';
 
 const GRAPH_STATES = [...generalRoute];
 
 @NgModule({
     imports: [BackofficeSharedModule, ChartsModule, RouterModule.forChild(GRAPH_STATES)],
-    declarations: [DemoComponent],
-    entryComponents: [DemoComponent],
+    declarations: [GeneralComponent, DemoComponent, ActivityComponent],
+    entryComponents: [GeneralComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

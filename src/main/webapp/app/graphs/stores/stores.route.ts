@@ -4,9 +4,9 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@a
 import { UserRouteAccessService } from 'app/core';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { DemoComponent } from 'app/graphs/stores/demo.component';
 import { ClassificationService } from 'app/entities/classification';
 import { Classification, IClassification } from 'app/shared/model/classification.model';
+import { StoresComponent } from 'app/graphs/stores/stores.component';
 
 @Injectable({ providedIn: 'root' })
 export class StoresResolve implements Resolve<IClassification> {
@@ -27,7 +27,7 @@ export class StoresResolve implements Resolve<IClassification> {
 export const storesRoute: Routes = [
     {
         path: '',
-        component: DemoComponent,
+        component: StoresComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'backofficeApp.graphs.stores.demo'

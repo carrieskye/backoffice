@@ -4,12 +4,12 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@a
 import { UserRouteAccessService } from 'app/core';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { DemoComponent } from 'app/graphs/general/demo.component';
+import { DemoComponent } from 'app/graphs/stores/demo.component';
 import { ClassificationService } from 'app/entities/classification';
 import { Classification, IClassification } from 'app/shared/model/classification.model';
 
 @Injectable({ providedIn: 'root' })
-export class GeneralResolve implements Resolve<IClassification> {
+export class StoresResolve implements Resolve<IClassification> {
     constructor(private service: ClassificationService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IClassification> {
@@ -24,13 +24,13 @@ export class GeneralResolve implements Resolve<IClassification> {
     }
 }
 
-export const generalRoute: Routes = [
+export const storesRoute: Routes = [
     {
         path: '',
         component: DemoComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'backofficeApp.graphs.general.demo'
+            pageTitle: 'backofficeApp.graphs.stores.demo'
         },
         canActivate: [UserRouteAccessService]
     }

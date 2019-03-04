@@ -15,5 +15,6 @@ import java.util.List;
 public interface ClassificationRepository extends JpaRepository<Classification, Long> {
 
     public List<Classification> getAllByDevice_Id(long id);
+    public Classification findTopByOrderByIdDesc();
 
 }

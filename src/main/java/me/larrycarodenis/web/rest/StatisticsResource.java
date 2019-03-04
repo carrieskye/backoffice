@@ -5,13 +5,11 @@ import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.GenderTotals;
 import me.larrycarodenis.domain.enumeration.Gender;
 import me.larrycarodenis.repository.ClassificationRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.*;
 
 @RestController
@@ -86,6 +84,19 @@ public class StatisticsResource {
             timePointer = timePointer.plusMinutes(interval);
         }
         return data;
+    }
+
+    @GetMapping("/agedistribution")
+    public void getAgeDistribution(@RequestParam(name = "start", required = true) @DateTimeFormat(pattern="ddMMyyyy") Date startPeriod,
+                                   @RequestParam(name = "end", required = true) @DateTimeFormat(pattern = "ddMMyyyy") Date endPeriod,
+                                   @RequestParam(name = "interval", required = false, defaultValue = "10") Integer interval)
+    {
+        LocalDate begin = startPeriod.toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
+        LocalDate end = endPeriod.toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
+
+
+
+
     }
 
 }

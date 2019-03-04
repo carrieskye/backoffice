@@ -1,3 +1,11 @@
 <p>
   activity works!
 </p>
+<p>{{test}}</p>
+<p>{{activities.length}}</p>
+
+<div>
+    <p *ngFor="let activity of activities">
+        {{activity.timestamp}}
+    </p>
+</div>

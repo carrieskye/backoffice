@@ -8,6 +8,7 @@ import me.larrycarodenis.repository.ClassificationRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.*;
 import java.util.*;
@@ -40,7 +41,8 @@ public class StatisticsResource {
 
         if(store == -1)
         {
-            classificationList = classificationRepository.findAll();
+            List<Classification> temp = classificationRepository.findAll();
+            classificationList = groupedClassifications(temp);
         }
         else
         {
@@ -51,10 +53,8 @@ public class StatisticsResource {
             for(Classification classification : list)
             {
                 System.out.println(classification.getDevice().getId());
-                System.out.println(store);
                 if(classification.getDevice().getId().equals(store) )
                 {
-                    System.out.println("True");
                     classificationList.add(classification);
                 }
             }
@@ -64,12 +64,15 @@ public class StatisticsResource {
         {
             int male = 0;
             int female = 0;
+            List<Classification> classifications = new ArrayList<>();
+            GenderTotals genderTotal = new GenderTotals();
 
             for(Classification classification : classificationList)
             {
                 LocalTime classificationTime = LocalTime.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
                 if(classificationTime.isAfter(timePointer) && classificationTime.isBefore(timePointer.plusMinutes(interval)))
                 {
+                    classifications.add(classification);
                     if(classification.getGender() == Gender.MALE)
                     {
                         male++;
@@ -80,7 +83,10 @@ public class StatisticsResource {
                     }
                 }
             }
-            data.put(timePointer, new GenderTotals(male, female));
+            genderTotal.setM(male);
+            genderTotal.setF(female);
+            genderTotal.setClassificationList(classifications);
+            data.put(timePointer, genderTotal);
             timePointer = timePointer.plusMinutes(interval);
         }
         return data;
@@ -97,6 +103,54 @@ public class StatisticsResource {
 
 
 
+    }
+
+
+    public List<Classification> groupedClassifications(List<Classification> raw)
+    {
+        List<Classification> grouped = new ArrayList<>();
+        grouped.add(raw.get(0));
+        for(Classification classification : raw)
+        {
+            innerloop:
+            for(Classification classification2 : raw)
+            {
+                System.out.println(classification.getId());
+                System.out.println(classification2.getId());
+                LocalTime classificationTime1 = classification.getTimestamp().atZone(ZoneId.of("GMT+1")).toLocalTime();
+                LocalTime classificationTime2 = classification2.getTimestamp().atZone(ZoneId.of("GMT+1")).toLocalTime();
+                //System.out.println("classification time 1 " + classificationTime1);
+                //System.out.println("classification time 2 " + classificationTime2);
+                //System.out.println(MINUTES.between(classificationTime1, classificationTime2));
+                if(MINUTES.between(classificationTime1, classificationTime2) > 5 || MINUTES.between(classificationTime1, classificationTime2) < 0)
+                {
+                    //System.out.println("difference in time, unique classification");
+
+                    if(grouped.contains(classification)|| grouped.contains(classification2) || classification.getPersonId().equals(classification2.getPersonId()))
+                    {
+                        //break innerloop;
+                    }
+                    else
+                    {
+                        System.out.println("I'm doing something I should'nt be doing and I am an asshole");
+                        grouped.add(classification);
+                    }
+
+                }
+                else
+                {
+                    break innerloop;
+
+                }
+            }
+        }
+        for(Classification cl : grouped)
+        {
+            System.out.println(cl.getId());
+        }
+
+
+        return grouped;
     }
 
 }

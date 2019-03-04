@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JhiAlertService } from 'ng-jhipster';
 import { ActivityService } from 'app/graphs/general/activity/activity.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IActivity } from 'app/shared/model/activity.model';
-import { Moment } from 'moment';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'jhi-general-activity',
@@ -19,9 +17,11 @@ export class ActivityComponent implements OnInit {
     loadAll() {
         this.activityService.query().subscribe(
             result => {
-                this.convertCrap(result);
+                const keys = Object.keys(result).sort();
 
-                // this.activities = result;
+                const values = keys.map(key => result[key]);
+                console.log(keys);
+                console.log(values);
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -33,9 +33,5 @@ export class ActivityComponent implements OnInit {
 
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
-    }
-
-    protected convertCrap(crap) {
-        console.log(crap);
     }
 }

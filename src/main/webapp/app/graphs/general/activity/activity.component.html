@@ -1,11 +1,12 @@
-<p>
-  activity works!
-</p>
-<p>{{test}}</p>
-<p>{{activities.length}}</p>
-
-<div>
-    <p *ngFor="let activity of activities">
-        {{activity.timestamp}}
-    </p>
+<div class="row">
+    <div class="col-md-12">
+        <div style="display: block">
+            <canvas baseChart width="400" height="150"
+                    [datasets]="activitiesData"
+                    [labels]="activitiesLabels"
+                    [options]="activitiesOptions"
+                    [legend]="activitiesLegend"
+                    [chartType]="activitiesChartType"></canvas>
+        </div>
+    </div>
 </div>

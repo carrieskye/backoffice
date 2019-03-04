@@ -9,8 +9,11 @@ import { HttpErrorResponse } from '@angular/common/http';
     styles: []
 })
 export class ActivityComponent implements OnInit {
-    activities: any[] = [];
-    test = 'TEST';
+    public activitiesLabels: string[] = [];
+    public activitiesData: any[] = [{ data: [], label: 'Male' }, { data: [], label: 'Female' }];
+    public activitiesChartType = 'bar';
+    public activitiesLegend = true;
+    public activitiesOptions: any = { scaleShowVerticalLines: false, responsive: true };
 
     constructor(protected activityService: ActivityService, protected jhiAlertService: JhiAlertService) {}
 
@@ -19,9 +22,17 @@ export class ActivityComponent implements OnInit {
             result => {
                 const keys = Object.keys(result).sort();
 
-                const values = keys.map(key => result[key]);
-                console.log(keys);
-                console.log(values);
+                const maleData = [];
+                const femaleData = [];
+
+                keys.forEach(key => {
+                    this.activitiesLabels.push(key);
+
+                    maleData.push(result[key]['m']);
+                    femaleData.push(result[key]['f']);
+                });
+
+                this.activitiesData = [{ data: maleData, label: 'Male' }, { data: femaleData, label: 'Female' }];
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );

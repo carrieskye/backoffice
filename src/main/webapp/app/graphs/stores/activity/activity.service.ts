@@ -13,9 +13,9 @@ export class ActivityService {
 
     constructor(protected http: HttpClient) {}
 
-    query(interval?: number): Observable<any> {
+    query(store: number, interval?: number): Observable<any> {
         let url = this.resourceUrl;
-        url += interval ? '?interval=' + interval : '';
+        url += interval ? '?interval=' + interval + '&store=' + store : '?store=' + store;
         return this.http.get<Map<Moment, IActivity>>(url, { observe: 'body' });
     }
 }

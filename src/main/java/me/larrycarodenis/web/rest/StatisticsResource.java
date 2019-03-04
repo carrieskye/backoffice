@@ -8,6 +8,7 @@ import me.larrycarodenis.repository.ClassificationRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.*;
 import java.util.*;
@@ -40,7 +41,8 @@ public class StatisticsResource {
 
         if(store == -1)
         {
-            classificationList = classificationRepository.findAll();
+            List<Classification> temp = classificationRepository.findAll();
+            classificationList = groupedClassifications(temp);
         }
         else
         {
@@ -97,6 +99,36 @@ public class StatisticsResource {
 
 
 
+    }
+
+
+    public List<Classification> groupedClassifications(List<Classification> raw)
+    {
+        List<Classification> grouped = new ArrayList<>();
+        grouped.add(raw.get(0));
+        for(Classification classification : raw)
+        {
+            innerloop:
+            for(Classification classification2 : raw)
+            {
+                LocalTime classificationTime1 = classification.getTimestamp().atZone(ZoneId.of("GMT+1")).toLocalTime();
+                LocalTime classificationTime2 = classification2.getTimestamp().atZone(ZoneId.of("GMT+1")).toLocalTime();
+                System.out.println(MINUTES.between(classificationTime1, classificationTime2) > 5);
+                if(MINUTES.between(classificationTime1, classificationTime2) > 5 || classification.getId().equals(classification2.getId()))
+                {
+                    System.out.println("I'm doing something I should'nt be doing and I am an asshole");
+                    grouped.add(classification);
+                }
+                else
+                {
+                    break innerloop;
+
+                }
+            }
+        }
+
+
+        return grouped;
     }
 
 }

@@ -9,12 +9,13 @@ import { DemoComponent, generalRoute } from './';
 import { ChartsModule } from 'ng2-charts';
 import { ActivityComponent } from './activity/activity.component';
 import { GeneralComponent } from './general.component';
+import { AgeDistributionComponent } from './age-distribution/age-distribution.component';
 
 const GRAPH_STATES = [...generalRoute];
 
 @NgModule({
     imports: [BackofficeSharedModule, ChartsModule, RouterModule.forChild(GRAPH_STATES)],
-    declarations: [GeneralComponent, DemoComponent, ActivityComponent],
+    declarations: [GeneralComponent, DemoComponent, ActivityComponent, AgeDistributionComponent],
     entryComponents: [GeneralComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

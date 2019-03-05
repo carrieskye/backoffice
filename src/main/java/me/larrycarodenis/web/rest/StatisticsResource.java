@@ -42,7 +42,7 @@ public class StatisticsResource {
         if(store == -1)
         {
             List<Classification> temp = classificationRepository.findAll();
-            classificationList = groupedClassifications(temp);
+            classificationList = classificationRepository.findAll();
         }
         else
         {
@@ -105,52 +105,32 @@ public class StatisticsResource {
 
     }
 
-
-    public List<Classification> groupedClassifications(List<Classification> raw)
+    public void groupClassifications()
     {
-        List<Classification> grouped = new ArrayList<>();
-        grouped.add(raw.get(0));
-        for(Classification classification : raw)
+        List<Classification> all = classificationRepository.findAll();
+
+        LocalTime timeStart = LocalTime.of(9, 0);
+        LocalTime timeEnd = LocalTime.of(19, 0);
+        int interval = 5;
+        LocalTime timePointer = timeStart;
+
+        Map<LocalTime, List<Classification>> data = new HashMap<>();
+
+        while (timePointer.isBefore(timeEnd))
         {
-            innerloop:
-            for(Classification classification2 : raw)
+            List<Classification> classifications = new ArrayList<>();
+
+            for(Classification classification : all)
             {
-                System.out.println(classification.getId());
-                System.out.println(classification2.getId());
-                LocalTime classificationTime1 = classification.getTimestamp().atZone(ZoneId.of("GMT+1")).toLocalTime();
-                LocalTime classificationTime2 = classification2.getTimestamp().atZone(ZoneId.of("GMT+1")).toLocalTime();
-                //System.out.println("classification time 1 " + classificationTime1);
-                //System.out.println("classification time 2 " + classificationTime2);
-                //System.out.println(MINUTES.between(classificationTime1, classificationTime2));
-                if(MINUTES.between(classificationTime1, classificationTime2) > 5 || MINUTES.between(classificationTime1, classificationTime2) < 0)
+                LocalTime classificationTime = LocalTime.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
+                if(classificationTime.isAfter(timePointer) && classificationTime.isBefore(timePointer.plusMinutes(interval)))
                 {
-                    //System.out.println("difference in time, unique classification");
-
-                    if(grouped.contains(classification)|| grouped.contains(classification2) || classification.getPersonId().equals(classification2.getPersonId()))
-                    {
-                        //break innerloop;
-                    }
-                    else
-                    {
-                        System.out.println("I'm doing something I should'nt be doing and I am an asshole");
-                        grouped.add(classification);
-                    }
-
-                }
-                else
-                {
-                    break innerloop;
-
+                    classifications.add(classification);
                 }
             }
+            data.put(timePointer, classifications);
+            timePointer = timePointer.plusMinutes(interval);
         }
-        for(Classification cl : grouped)
-        {
-            System.out.println(cl.getId());
-        }
-
-
-        return grouped;
     }
 
 }

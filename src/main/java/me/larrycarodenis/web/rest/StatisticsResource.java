@@ -104,7 +104,7 @@ public class StatisticsResource {
 
         List<Classification> classificationsInTimeInterval = new ArrayList<>();
 
-        for(Classification classification : classificationRepository.findAll())
+        for(Classification classification : groupClassifications())
         {
             if(LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1"))).isAfter(begin) && LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1"))).isBefore(end))
             {

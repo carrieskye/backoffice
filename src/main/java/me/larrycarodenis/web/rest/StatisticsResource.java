@@ -9,6 +9,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import java.time.*;
 import java.util.*;
@@ -38,6 +42,7 @@ public class StatisticsResource {
         Map<LocalTime, GenderTotals> data = new HashMap<>();
 
         List<Classification> classificationList;
+        groupClassifications();
 
         if(store == -1)
         {
@@ -131,6 +136,19 @@ public class StatisticsResource {
             data.put(timePointer, classifications);
             timePointer = timePointer.plusMinutes(interval);
         }
+
+        for (Map.Entry<LocalTime, List<Classification>> entry : data.entrySet()) {
+            List<Classification> result = entry.getValue().stream().filter(distinctByKey(classification -> classification.getPersonId() + classification.getDevice().getId())).collect(Collectors.toList());
+            for(Classification cl : result)
+            {
+                System.out.println("Classification with: " + cl.getPersonId() + " At time: " + cl.getTimestamp());
+            }
+        }
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
 }

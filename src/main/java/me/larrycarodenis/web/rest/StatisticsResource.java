@@ -93,15 +93,47 @@ public class StatisticsResource {
     }
 
     @GetMapping("/agedistribution")
-    public void getAgeDistribution(@RequestParam(name = "start", required = true) @DateTimeFormat(pattern="ddMMyyyy") Date startPeriod,
+    public Map<Integer, Integer> getAgeDistribution(@RequestParam(name = "start", required = true) @DateTimeFormat(pattern="ddMMyyyy") Date startPeriod,
                                    @RequestParam(name = "end", required = true) @DateTimeFormat(pattern = "ddMMyyyy") Date endPeriod,
                                    @RequestParam(name = "interval", required = false, defaultValue = "10") Integer interval)
     {
+        Map<Integer, Integer> data = new HashMap<>();
+
         LocalDate begin = startPeriod.toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
         LocalDate end = endPeriod.toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
 
+        List<Classification> classificationsInTimeInterval = new ArrayList<>();
+
+        for(Classification classification : classificationRepository.findAll())
+        {
+            if(LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1"))).isAfter(begin) && LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1"))).isBefore(end))
+            {
+                classificationsInTimeInterval.add(classification);
+            }
+        }
+
+        int beginAge = 0;
+        int endAge = 90;
+        int pointer = beginAge;
+
+        while(pointer < endAge)
+        {
+            int counter = 0;
+
+            for(Classification classification : classificationsInTimeInterval)
+            {
+                System.out.println(classification.getAge());
+                if(classification.getAge() > pointer && classification.getAge() < pointer + interval)
+                {
+                    counter ++;
+                }
+            }
+            data.put(pointer, counter);
+            pointer = pointer + interval;
 
 
+        }
+        return data;
 
     }
 

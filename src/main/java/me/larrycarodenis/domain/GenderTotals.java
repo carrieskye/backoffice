@@ -6,10 +6,11 @@ public class GenderTotals {
 
     private int M;
     private int F;
-    private List<Classification> classificationList;
 
-    public GenderTotals() {
-
+    public GenderTotals(int M, int F)
+    {
+        setM(M);
+        setF(F);
     }
 
     public void setM(int M) {
@@ -28,14 +29,6 @@ public class GenderTotals {
         return F;
     }
 
-    public void setClassificationList(List<Classification> classificationList) {
-        this.classificationList = classificationList;
-    }
-
-    public List<Classification> getClassificationList()
-    {
-        return classificationList;
-    }
 
 
 

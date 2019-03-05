@@ -46,8 +46,7 @@ public class StatisticsResource {
 
         if(store == -1)
         {
-            List<Classification> temp = classificationRepository.findAll();
-            classificationList = classificationRepository.findAll();
+            classificationList = groupClassifications();
         }
         else
         {
@@ -70,7 +69,6 @@ public class StatisticsResource {
             int male = 0;
             int female = 0;
             List<Classification> classifications = new ArrayList<>();
-            GenderTotals genderTotal = new GenderTotals();
 
             for(Classification classification : classificationList)
             {
@@ -88,10 +86,7 @@ public class StatisticsResource {
                     }
                 }
             }
-            genderTotal.setM(male);
-            genderTotal.setF(female);
-            genderTotal.setClassificationList(classifications);
-            data.put(timePointer, genderTotal);
+            data.put(timePointer, new GenderTotals(male, female));
             timePointer = timePointer.plusMinutes(interval);
         }
         return data;
@@ -110,7 +105,7 @@ public class StatisticsResource {
 
     }
 
-    public void groupClassifications()
+    public List<Classification> groupClassifications()
     {
         List<Classification> all = classificationRepository.findAll();
 
@@ -118,6 +113,7 @@ public class StatisticsResource {
         LocalTime timeEnd = LocalTime.of(19, 0);
         int interval = 5;
         LocalTime timePointer = timeStart;
+        List<Classification> finalClassifications = new ArrayList<>();
 
         Map<LocalTime, List<Classification>> data = new HashMap<>();
 
@@ -142,8 +138,10 @@ public class StatisticsResource {
             for(Classification cl : result)
             {
                 System.out.println("Classification with: " + cl.getPersonId() + " At time: " + cl.getTimestamp());
+                finalClassifications.add(cl);
             }
         }
+        return finalClassifications;
     }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {

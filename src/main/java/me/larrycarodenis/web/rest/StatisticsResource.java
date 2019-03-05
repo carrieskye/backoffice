@@ -8,6 +8,8 @@ import me.larrycarodenis.repository.ClassificationRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -38,6 +40,10 @@ public class StatisticsResource {
     {
         LocalTime timeStart = LocalTime.of(9, 0);
         LocalTime timeEnd = LocalTime.of(19, 0);
+
+        LocalDate begin  = LocalDate.now();
+        LocalDate end = LocalDate.of(1970, 01, 01);
+
         LocalTime timePointer = timeStart;
         Map<LocalTime, GenderTotals> data = new HashMap<>();
 
@@ -50,7 +56,7 @@ public class StatisticsResource {
         }
         else
         {
-            List<Classification> list = classificationRepository.findAll();
+            List<Classification> list = groupClassifications();
 
             classificationList = new ArrayList<>();
 
@@ -64,29 +70,45 @@ public class StatisticsResource {
             }
         }
 
+        for(Classification classification : classificationList)
+        {
+            LocalDate classificationDate = LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
+
+            if (classificationDate.isBefore(begin)) {
+                begin = classificationDate;
+            }
+            if (classificationDate.isAfter(end)) {
+                end = classificationDate;
+            }
+        }
+
+        int totalDays = (int) DAYS.between(begin, end);
+
         while (timePointer.isBefore(timeEnd))
         {
             int male = 0;
             int female = 0;
-            List<Classification> classifications = new ArrayList<>();
 
             for(Classification classification : classificationList)
             {
                 LocalTime classificationTime = LocalTime.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
-                if(classificationTime.isAfter(timePointer) && classificationTime.isBefore(timePointer.plusMinutes(interval)))
+
+                if (classificationTime.isAfter(timePointer) && classificationTime.isBefore(timePointer.plusMinutes(interval)))
                 {
-                    classifications.add(classification);
-                    if(classification.getGender() == Gender.MALE)
+
+                    if (classification.getGender() == Gender.MALE)
                     {
                         male++;
                     }
                     else
                     {
-                        female++;
+                        female ++;
                     }
+
                 }
             }
-            data.put(timePointer, new GenderTotals(male, female));
+            System.out.println(totalDays);
+            data.put(timePointer, new GenderTotals((male/totalDays)*(6/7), (female/totalDays)*(6/7)));
             timePointer = timePointer.plusMinutes(interval);
         }
         return data;

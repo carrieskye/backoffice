@@ -2,12 +2,14 @@ package me.larrycarodenis.domain;
 
 import java.time.LocalTime;
 
+
 public class Metrics
 {
     private int numberOfStores;
     private double femaleRatio;
     private LocalTime lastClassification;
     private double ageMedian;
+    private int distinctCustomers;
 
     public Metrics()
     {
@@ -44,6 +46,16 @@ public class Metrics
 
     public void setAgeMedian(double ageMedian) {
         this.ageMedian = ageMedian;
+    }
+
+    public int getDistinctCustomers()
+    {
+        return distinctCustomers;
+    }
+
+    public void setDistinctCustomers(int distinctCustomers)
+    {
+        this.distinctCustomers = distinctCustomers;
     }
 
     public String toString()

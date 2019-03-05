@@ -1,23 +1,25 @@
 package me.larrycarodenis.web.rest;
 import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.Device;
+import me.larrycarodenis.domain.Ip;
 import me.larrycarodenis.repository.ClassificationRepository;
 import me.larrycarodenis.repository.DeviceRepository;
+import me.larrycarodenis.repository.IpRepository;
 import me.larrycarodenis.web.rest.errors.BadRequestAlertException;
 import me.larrycarodenis.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.omg.CORBA.ServerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Device.
@@ -33,6 +35,8 @@ public class DeviceResource {
     private final DeviceRepository deviceRepository;
 
     private final ClassificationRepository classificationReposistory;
+
+    private IpRepository ipRepository = new IpRepository();
 
     public DeviceResource(DeviceRepository deviceRepository, ClassificationRepository classificationReposistory) {
         this.deviceRepository = deviceRepository;
@@ -59,8 +63,12 @@ public class DeviceResource {
     }
 
     @PostMapping("/devices/{id}/export")
-    public ResponseEntity<Classification> saveClassification(@PathVariable Long id, @RequestBody ArrayList<Classification> data)
+    public ResponseEntity<Classification> saveClassification(HttpServletRequest request, @PathVariable Long id, @RequestBody ArrayList<Classification> data)
     {
+        System.out.println(request.getRemoteAddr());
+        ipRepository.save(new Ip(request.getRemoteHost(), id));
+
+
         for(Classification classification : data)
         {
             Device device = deviceRepository.findById(id).get();
@@ -68,8 +76,24 @@ public class DeviceResource {
             System.out.println("classification:");
             System.out.println(classification.toString());
             classificationReposistory.save(classification);
+
         }
         return null;
+    }
+
+    @GetMapping("/devices/ip")
+    public Map<Long, String> getIp()
+    {
+        System.out.println("ik ben hier");
+        Map<Long, String> ipMap = new HashMap<>();
+        List<Ip> ips = ipRepository.findAll();
+        System.out.println(ips);
+        for(Ip ip : ips)
+        {
+
+            ipMap.put(ip.getDeviceId(), ip.getIp());
+        }
+        return ipMap;
     }
 
     /**

@@ -1,15 +1,19 @@
 package me.larrycarodenis.web.rest;
 
 import me.larrycarodenis.domain.Classification;
+import me.larrycarodenis.domain.Ip;
 import me.larrycarodenis.domain.Metrics;
 import me.larrycarodenis.repository.ClassificationRepository;
 import me.larrycarodenis.repository.DeviceRepository;
+import me.larrycarodenis.repository.IpRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;

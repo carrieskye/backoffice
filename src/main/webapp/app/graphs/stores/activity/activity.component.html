@@ -1,3 +1,23 @@
-<p>
-  activity works!
-</p>
+<div ngbDropdown *ngIf="selectedDevice" class="d-inline-block">
+    <button class="btn btn-outline-default" id="dropdownStores" ngbDropdownToggle>
+        {{selectedDevice.postalCode}} - {{selectedDevice.name}}
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownStores">
+        <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
+            {{device.postalCode}} - {{device.name}}
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="display: block">
+            <canvas baseChart width="400" height="150"
+                    [datasets]="activitiesData"
+                    [labels]="activitiesLabels"
+                    [options]="activitiesOptions"
+                    [legend]="activitiesLegend"
+                    [chartType]="activitiesChartType"></canvas>
+        </div>
+    </div>
+</div>

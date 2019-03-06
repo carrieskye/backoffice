@@ -1,9 +1,42 @@
-<div class="row">
+<div class="row" *ngIf="isAuthenticated() && metrics">
     <div class="col-md-12">
-        <h1 class="display-4" *ngIf="isAuthenticated()">
+        <h1 class="display-4">
             <span jhiTranslate="home.welcome">Welcome</span>
             {{account.login}}!
         </h1>
         <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
     </div>
+
+    <div class="col-md-3 text-center">
+        <div class="icon"><fa-icon icon="tv"></fa-icon></div>
+        {{metrics.numberOfDevices}} devices
+        <!-- TODO: this ng-pluralize is not working :( -->
+        <ng-pluralize count="metrics.numberOfDevices"
+                      when="{
+                      '0': 'No devices',
+                     'one': '1 device',
+                     'other': '{} devices'
+                     }">
+        </ng-pluralize>
+    </div>
+
+    <div class="col-md-3 text-center">
+        <div class="icon"><fa-icon icon="camera"></fa-icon></div>
+        Classifications
+    </div>
+    <div class="col-md-3 text-center">
+        <div class="icon"><fa-icon icon="birthday-cake"></fa-icon></div>
+        Average Age
+    </div>
+    <div class="col-md-3 text-center">
+        <div class="icon"><fa-icon icon="venus-mars"></fa-icon></div>
+        Most common Gender
+    </div>
+    <div class="col-md-12">
+        <pre>{{metrics|json}}</pre>
+    </div>
+</div>
+<div class="row" *ngIf="!isAuthenticated()">
+    <h1 class="display-4">Hi Guest!</h1>
+    <p>Please request an account to access the back office</p>
 </div>

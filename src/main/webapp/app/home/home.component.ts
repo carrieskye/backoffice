@@ -3,6 +3,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginModalService, AccountService, Account } from 'app/core';
+import { MetricsService } from 'app/home/metrics.service';
 
 @Component({
     selector: 'jhi-home',
@@ -12,11 +13,13 @@ import { LoginModalService, AccountService, Account } from 'app/core';
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
+    metrics: any;
 
     constructor(
         private accountService: AccountService,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private metricsService: MetricsService
     ) {}
 
     ngOnInit() {
@@ -24,6 +27,7 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+        this.metricsService.all().subscribe(data => (this.metrics = data));
     }
 
     registerAuthenticationSuccess() {

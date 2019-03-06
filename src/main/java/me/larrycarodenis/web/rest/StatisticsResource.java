@@ -24,6 +24,9 @@ import java.util.*;
 @RequestMapping("/api/statistics")
 public class StatisticsResource {
 
+    private static int MIN_AGE = 0;
+    private static int MAX_AGE = 100;
+
     private ClassificationRepository classificationRepository;
 
     public StatisticsResource(ClassificationRepository classificationRepository) {
@@ -31,117 +34,59 @@ public class StatisticsResource {
     }
 
     /**
-     * GET  /activity : get amount of male and female classification for a day
+     * GET  /activity/age : get amount of classifications per age-group for a day
      *
      * @return the ResponseEntity with status 200 (OK) and the list of devices in body
      */
-
-    @GetMapping("/agetimedistribution")
-    public Map<LocalTime, Map<Integer, Integer>> getAgeTimeDistribution(@RequestParam(name = "start", required = true) @DateTimeFormat(pattern="ddMMyyyy") Date startPeriod,
-                                                    @RequestParam(name = "end", required = true) @DateTimeFormat(pattern = "ddMMyyyy") Date endPeriod,
-                                                    @RequestParam(name = "ageinterval", required = false, defaultValue = "10") Integer ageInterval,
-                                                    @RequestParam(name = "timeinterval", required = false, defaultValue = "10") Integer timeInterval,
-                                                    @RequestParam(name = "store", required = false, defaultValue = "-1") Long store)
-    {
-
-
-        LocalTime timeStart = LocalTime.of(9, 0);
-        LocalTime timeEnd = LocalTime.of(19, 0);
-
-        LocalDate beginDate  = LocalDate.now();
-        LocalDate endDate = LocalDate.of(1970, 01, 01);
-
-        LocalTime timePointer = timeStart;
+    @GetMapping("/activity/age")
+    public Map<LocalTime, Map<Integer, Integer>> getActivity(
+        @RequestParam(required = false, defaultValue = "-1") Long store,
+        @RequestParam(required = false, defaultValue = "15") Integer interval,
+        @RequestParam(required = false, defaultValue = "25") Integer ageInterval,
+        @RequestParam(required = false, defaultValue = "09:00") LocalTime timeStart,
+        @RequestParam(required = false, defaultValue = "19:00") LocalTime timeEnd
+    ) {
         Map<LocalTime, Map<Integer, Integer>> data = new HashMap<>();
+        // get classifications
+        List<Classification> classifications = store == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(store);
 
-        List<Classification> classificationList;
-        groupClassifications();
+        // group by deviceid & personid
+        List<ClassificationWithDuration> classificationsGrouped = classificationRepository.findAllGrouped(classifications);
 
-        if(store == -1)
-        {
-            classificationList = groupClassifications();
-        }
-        else
-        {
-            List<Classification> list = groupClassifications();
+        // create intervals
+        int amountOfIntervals = (int) Math.ceil(MINUTES.between(timeStart, timeEnd) / interval);
+        for (int i = 0; i < amountOfIntervals; i++) {
+            LocalTime intervalStart = timeStart.plusMinutes(i * interval);
+            LocalTime intervalEnd = timeStart.plusMinutes((i + 1) * interval);
 
-            classificationList = new ArrayList<>();
+            Map<Integer, Integer> ages = new HashMap<>();
+            int amountOfAgeIntervals = (int) Math.ceil((MAX_AGE - MIN_AGE) / ageInterval);
+            for (int j = 0; j < amountOfAgeIntervals; j++) {
+                int ageMin = j * ageInterval;
+                int ageMax = (j + 1) * ageInterval;
 
-            for(Classification classification : list)
-            {
-                System.out.println(classification.getDevice().getId());
-                if(classification.getDevice().getId().equals(store) )
-                {
-                    classificationList.add(classification);
-                }
+                // count classifications between ageMin and ageMax
+                int count = (int) classificationsGrouped.stream().filter(
+                    classification -> isClassificationWithDuractionBetweenAgesAndBetweenInterval(classification, ageMin, ageMax, intervalStart, intervalEnd)
+                ).count();
+
+                // add to inner map
+                ages.put(ageMin, count);
             }
-        }
 
-        for(Classification classification : classificationList)
-        {
-            LocalDate classificationDate = LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
-
-            if (classificationDate.isBefore(beginDate)) {
-                beginDate = classificationDate;
-            }
-            if (classificationDate.isAfter(endDate)) {
-                endDate = classificationDate;
-            }
-        }
-
-        int totalDays = (int) DAYS.between(beginDate, endDate);
-
-
-
-
-
-        while (timePointer.isBefore(timeEnd))
-        {
-            int male = 0;
-            int female = 0;
-            Map<Integer, Integer> ageDistr = new HashMap<>();
-            for(Classification classification : classificationList)
-            {
-
-                LocalTime classificationTime = LocalTime.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
-
-                if (classificationTime.isAfter(timePointer) && classificationTime.isBefore(timePointer.plusMinutes(timeInterval)))
-                {
-
-                    int beginAge = 0;
-                    int endAge = 90;
-                    int pointer = beginAge;
-
-
-                    while(pointer < endAge)
-                    {
-                        int counter = 0;
-
-                        for(Classification c : classificationList)
-                        {
-                            if(c.getAge() > pointer && c.getAge() < pointer + ageInterval)
-                            {
-                                counter ++;
-                            }
-                        }
-                        ageDistr.put(pointer, counter);
-                        pointer = pointer + ageInterval;
-
-
-                    }
-                }
-            }
-            data.put(timePointer, ageDistr);
-            timePointer = timePointer.plusMinutes(timeInterval);
+            // add to map
+            data.put(intervalStart, ages);
         }
         return data;
     }
 
-
-
-
-    @GetMapping("/activity")
-    public Map<LocalTime, GenderTotals> getActivity(
+    /**
+     * GET  /activity/gender : get amount of male and female classification for a day
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of devices in body
+     */
+    @GetMapping("/activity/gender")
+    public Map<LocalTime, GenderTotals> getActivityByGender(
         @RequestParam(required = false, defaultValue = "-1") Long store,
         @RequestParam(required = false, defaultValue = "15") Integer interval,
         @RequestParam(required = false, defaultValue = "09:00") LocalTime timeStart,
@@ -173,7 +118,7 @@ public class StatisticsResource {
 
             // add to map
             data.put(
-                timeStart.plusMinutes(i * interval),
+                intervalStart,
                 new GenderTotals(males, females)
             );
         }
@@ -198,6 +143,13 @@ public class StatisticsResource {
 
     private boolean isClassificationWithDuractionOfGenderAndBetweenInterval(ClassificationWithDuration classification, Gender gender, LocalTime intervalStart, LocalTime intervalEnd) {
         return classification.getGender().equals(gender) && (
+            isBetween(classification.getTimestampFirst(), intervalStart, intervalEnd) ||
+                isBetween(classification.getTimestampLast(), intervalStart, intervalEnd)
+        );
+    }
+
+    private boolean isClassificationWithDuractionBetweenAgesAndBetweenInterval(ClassificationWithDuration classification, int ageMin, int ageMax, LocalTime intervalStart, LocalTime intervalEnd) {
+        return classification.getAge() > ageMin && classification.getAge() < ageMax && (
             isBetween(classification.getTimestampFirst(), intervalStart, intervalEnd) ||
                 isBetween(classification.getTimestampLast(), intervalStart, intervalEnd)
         );

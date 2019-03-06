@@ -45,4 +45,12 @@ export class HomeComponent implements OnInit {
     login() {
         this.modalRef = this.loginModalService.open();
     }
+
+    ratioToFemalePercentage(ratio) {
+        return Math.round(ratio * 10000) / 100;
+    }
+
+    ratioToMalePercentage(ratio) {
+        return Math.round((1 - ratio) * 10000) / 100;
+    }
 }

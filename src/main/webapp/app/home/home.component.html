@@ -7,7 +7,7 @@
         <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
     </div>
 
-    <div class="col-md-3 text-center">
+    <div class="col-md-2 text-center">
         <div class="icon"><fa-icon icon="tv"></fa-icon></div>
         {{metrics.numberOfDevices}} devices
         <!-- TODO: this ng-pluralize is not working :( -->
@@ -20,20 +20,29 @@
         </ng-pluralize>
     </div>
 
-    <div class="col-md-3 text-center">
+    <div class="col-md-2 text-center">
+        <div class="icon"><fa-icon icon="users"></fa-icon></div>
+        {{metrics.distinctCustomers}} people detected
+    </div>
+
+    <div class="col-md-2 text-center">
         <div class="icon"><fa-icon icon="camera"></fa-icon></div>
-        Classifications
+        {{metrics.numberOfClassifications}} classifications
     </div>
-    <div class="col-md-3 text-center">
+
+    <div class="col-md-2 text-center">
         <div class="icon"><fa-icon icon="birthday-cake"></fa-icon></div>
-        Average Age
+        Average age of {{metrics.averageAge}}
     </div>
-    <div class="col-md-3 text-center">
-        <div class="icon"><fa-icon icon="venus-mars"></fa-icon></div>
-        Most common Gender
+
+    <div class="col-md-2 text-center">
+        <div class="icon"><fa-icon icon="venus"></fa-icon></div>
+        {{ratioToFemalePercentage(metrics.femaleRatio)}}% female
     </div>
-    <div class="col-md-12">
-        <pre>{{metrics|json}}</pre>
+
+    <div class="col-md-2 text-center">
+        <div class="icon"><fa-icon icon="mars"></fa-icon></div>
+        {{ratioToMalePercentage(metrics.femaleRatio)}}% male
     </div>
 </div>
 <div class="row" *ngIf="!isAuthenticated()">

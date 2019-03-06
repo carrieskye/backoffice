@@ -6,9 +6,11 @@ import { AgeDistributionService } from 'app/graphs/general/age-distribution/age-
 @Component({
     selector: 'jhi-general-age-distribution',
     templateUrl: './age-distribution.component.html',
-    styles: []
+    styleUrls: ['../../graphs.scss']
 })
 export class AgeDistributionComponent implements OnInit {
+    loading = false;
+
     today = new Date();
     interval = 10;
 
@@ -21,6 +23,7 @@ export class AgeDistributionComponent implements OnInit {
     constructor(protected ageDistributionService: AgeDistributionService, protected jhiAlertService: JhiAlertService) {}
 
     loadAll() {
+        this.loading = true;
         const lastYear = this.today.getFullYear() - 1;
         this.ageDistributionService.query(new Date(lastYear, 1, 1), this.today).subscribe(
             result => {
@@ -34,9 +37,13 @@ export class AgeDistributionComponent implements OnInit {
 
                     data.push(result[key]);
                 });
-                this.ageDistributionData = [{ data: data, label: 'Number of people' }];
+                this.ageDistributionData = [{ data, label: 'Number of people' }];
+                this.loading = false;
             },
-            (res: HttpErrorResponse) => this.onError(res.message)
+            (res: HttpErrorResponse) => {
+                this.onError(res.message);
+                this.loading = false;
+            }
         );
     }
 

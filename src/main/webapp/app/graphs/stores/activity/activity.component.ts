@@ -9,9 +9,12 @@ import { filter, map } from 'rxjs/operators';
 @Component({
     selector: 'jhi-stores-activity',
     templateUrl: './activity.component.html',
-    styles: []
+    styleUrls: ['../../graphs.scss']
 })
 export class ActivityComponent implements OnInit {
+    devicesLoading = false;
+    graphLoading = false;
+
     interval = 15;
     devices: IDevice[];
     selectedDevice: IDevice;
@@ -29,6 +32,7 @@ export class ActivityComponent implements OnInit {
     ) {}
 
     loadAll() {
+        this.devicesLoading = true;
         this.deviceService
             .query()
             .pipe(
@@ -41,8 +45,12 @@ export class ActivityComponent implements OnInit {
                     if (res.length > 0) {
                         this.selectStore(res[0]);
                     }
+                    this.devicesLoading = false;
                 },
-                (res: HttpErrorResponse) => this.onError(res.message)
+                (res: HttpErrorResponse) => {
+                    this.onError(res.message);
+                    this.devicesLoading = false;
+                }
             );
     }
 
@@ -63,8 +71,12 @@ export class ActivityComponent implements OnInit {
                 });
 
                 this.activitiesData = [{ data: femaleData, label: 'F' }, { data: maleData, label: 'M' }];
+                this.graphLoading = false;
             },
-            (res: HttpErrorResponse) => this.onError(res.message)
+            (res: HttpErrorResponse) => {
+                this.onError(res.message);
+                this.graphLoading = false;
+            }
         );
     }
 
@@ -73,6 +85,7 @@ export class ActivityComponent implements OnInit {
     }
 
     selectStore(device: IDevice) {
+        this.graphLoading = true;
         this.selectedDevice = device;
         this.updateTable();
     }

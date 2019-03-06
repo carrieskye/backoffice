@@ -6,9 +6,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
     selector: 'jhi-general-activity',
     templateUrl: './activity.component.html',
-    styles: []
+    styleUrls: ['../../graphs.scss']
 })
 export class ActivityComponent implements OnInit {
+    loading = false;
+
     activitiesLabels: string[] = [];
     activitiesData: any[] = [{ data: [], label: 'F' }, { data: [], label: 'M' }];
     activitiesChartType = 'bar';
@@ -18,6 +20,7 @@ export class ActivityComponent implements OnInit {
     constructor(protected activityService: ActivityService, protected jhiAlertService: JhiAlertService) {}
 
     loadAll() {
+        this.loading = true;
         this.activityService.query().subscribe(
             result => {
                 const keys = Object.keys(result).sort();
@@ -33,8 +36,12 @@ export class ActivityComponent implements OnInit {
                 });
 
                 this.activitiesData = [{ data: femaleData, label: 'F' }, { data: maleData, label: 'M' }];
+                this.loading = false;
             },
-            (res: HttpErrorResponse) => this.onError(res.message)
+            (res: HttpErrorResponse) => {
+                this.onError(res.message);
+                this.loading = false;
+            }
         );
     }
 

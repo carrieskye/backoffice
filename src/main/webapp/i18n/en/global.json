@@ -87,7 +87,8 @@
                     "minlength": "Your email is required to be at least 5 characters.",
                     "maxlength": "Your email cannot be longer than 50 characters."
                 }
-            }
+            },
+            "loading": "Loading..."
         },
         "field": {
             "id": "ID"

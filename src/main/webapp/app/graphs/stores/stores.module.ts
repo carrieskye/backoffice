@@ -4,7 +4,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
 import { BackofficeSharedModule } from 'app/shared';
-import { DemoComponent, storesRoute } from './';
+import { storesRoute } from './';
 
 import { ChartsModule } from 'ng2-charts';
 import { ActivityComponent } from './activity/activity.component';
@@ -14,7 +14,7 @@ const GRAPH_STATES = [...storesRoute];
 
 @NgModule({
     imports: [BackofficeSharedModule, ChartsModule, RouterModule.forChild(GRAPH_STATES)],
-    declarations: [StoresComponent, DemoComponent, ActivityComponent],
+    declarations: [StoresComponent, ActivityComponent],
     entryComponents: [StoresComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

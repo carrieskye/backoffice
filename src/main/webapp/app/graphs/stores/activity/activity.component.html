@@ -1,23 +1,32 @@
-<div ngbDropdown *ngIf="selectedDevice" class="d-inline-block">
-    <button class="btn btn-outline-default" id="dropdownStores" ngbDropdownToggle>
-        {{selectedDevice.postalCode}} - {{selectedDevice.name}}
-    </button>
-    <div ngbDropdownMenu aria-labelledby="dropdownStores">
-        <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
-            {{device.postalCode}} - {{device.name}}
-        </button>
-    </div>
-</div>
+<div class="graph">
+    <div *ngIf="!devicesLoading; else loadingDiv">
+        <div ngbDropdown *ngIf="selectedDevice" style="margin-bottom:1rem">
+            <button class="btn btn-outline-default" id="dropdownStores" ngbDropdownToggle>
+                {{selectedDevice.postalCode}} - {{selectedDevice.name}}
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownStores">
+                <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
+                    {{device.postalCode}} - {{device.name}}
+                </button>
+            </div>
+        </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div style="display: block">
-            <canvas baseChart width="400" height="150"
-                    [datasets]="activitiesData"
-                    [labels]="activitiesLabels"
-                    [options]="activitiesOptions"
-                    [legend]="activitiesLegend"
-                    [chartType]="activitiesChartType"></canvas>
+        <div class="row" *ngIf="!graphLoading; else loadingDiv">
+            <div class="col-md-12">
+                <div style="display: block">
+                    <canvas baseChart height="100"
+                            [datasets]="activitiesData"
+                            [labels]="activitiesLabels"
+                            [options]="activitiesOptions"
+                            [legend]="activitiesLegend"
+                            [chartType]="activitiesChartType"></canvas>
+                </div>
+            </div>
         </div>
     </div>
+
+    <ng-template #loadingDiv>
+        <span jhiTranslate="global.messages.loading">Loading...</span>
+        <div class="spinner"></div>
+    </ng-template>
 </div>

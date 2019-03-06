@@ -8,7 +8,7 @@ export const generalRoute: Routes = [
         component: GeneralComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'backofficeApp.graphs.general.demo'
+            pageTitle: 'backofficeApp.graphs.general.title'
         },
         canActivate: [UserRouteAccessService]
     }

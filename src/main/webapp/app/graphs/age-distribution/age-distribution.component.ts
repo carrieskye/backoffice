@@ -15,19 +15,24 @@ export class AgeDistributionComponent implements OnInit {
     devicesLoading = false;
     graphLoading = false;
 
-    interval = 15;
+    deviceOptions: IDevice[] = [];
+    ageIntervalOptions = [5, 10, 15, 20];
+    timeIntervalOptions = [1, 2, 3, 4, 5];
+    startTimeOptions = ['09:00', '10:00', '11:00'];
+    endTimeOptions = ['17:00', '18:00', '19:00'];
 
-    devices: IDevice[] = [];
     selectedDevice: IDevice;
+    ageInterval = 20;
+    timeInterval = 3;
+    startTime = '09:00';
+    endTime = '18:00';
 
-    chartTypes = [{ type: 'bar', name: 'Bar Chart' }, { type: 'line', name: 'Line chart' }];
-    selectedChartType = this.chartTypes[0];
+    timeIntervalLabels: string[] = [];
 
-    activitiesLabels: string[] = [];
-    activitiesData: any[] = [{ data: [], label: 0 }, { data: [], label: 25 }, { data: [], label: 50 }, { data: [], label: 75 }];
-    activitiesChartType = this.selectedChartType.type;
-    activitiesLegend = true;
-    activitiesOptions: any = { scaleShowVerticalLines: false, responsive: true };
+    ageDistributionLabels: string[] = [];
+    ageDistributionData: number[][] = [[]];
+    ageDistributionChartType = 'pie';
+    ageDistributionLegend = true;
 
     constructor(
         protected ageDistributionService: AgeDistributionService,
@@ -46,11 +51,11 @@ export class AgeDistributionComponent implements OnInit {
             .subscribe(
                 (res: IDevice[]) => {
                     const allDevices = { id: -1, name: 'All', postalCode: 0, homepage: null };
-                    this.devices.push(allDevices);
-                    res.forEach(device => this.devices.push(device));
+                    this.deviceOptions.push(allDevices);
+                    res.forEach(device => this.deviceOptions.push(device));
 
-                    if (this.devices.length > 0) {
-                        this.selectStore(this.devices[0]);
+                    if (this.deviceOptions.length > 0) {
+                        this.selectStore(this.deviceOptions[0]);
                     }
                     this.devicesLoading = false;
                 },
@@ -63,35 +68,49 @@ export class AgeDistributionComponent implements OnInit {
 
     updateTable() {
         this.graphLoading = true;
-        this.activitiesLabels = [];
-        const numberOfStores = this.selectedDevice.id === -1 ? this.devices.length - 1 : 1;
-        this.ageDistributionService.query(this.selectedDevice.id, this.interval).subscribe(
-            result => {
-                const keys = Object.keys(result).sort();
-                const labels = Object.keys(result[keys[0]]);
+        this.ageDistributionLabels = [];
 
-                let data = [];
-                labels.forEach(() => data.push([]));
+        const numberOfStores = this.selectedDevice.id === -1 ? this.deviceOptions.length - 1 : 1;
 
-                keys.forEach(key => {
-                    this.activitiesLabels.push(key);
-                    Object.keys(result[key]).forEach((category, index) => {
-                        data[index].push(Math.round(result[key][category] / numberOfStores));
+        this.ageDistributionService
+            .query(this.selectedDevice.id, this.timeInterval * 60, this.ageInterval, this.startTime, this.endTime)
+            .subscribe(
+                result => {
+                    const keys = Object.keys(result).sort();
+                    const labels = Object.keys(result[keys[0]]);
+
+                    // Create age category labels
+                    labels.forEach(label => {
+                        this.ageDistributionLabels.push(label + ' - ' + (parseInt(label, 10) + this.ageInterval).toString());
                     });
-                });
 
-                this.activitiesData = [];
-                labels.forEach((label, index) => {
-                    this.activitiesData[index] = { data: data[index], label: label };
-                });
+                    const data = [];
+                    this.timeIntervalLabels = [];
 
-                this.graphLoading = false;
-            },
-            (res: HttpErrorResponse) => {
-                this.onError(res.message);
-                this.graphLoading = false;
-            }
-        );
+                    keys.forEach((key, timeIndex) => {
+                        // Create time label
+                        if (timeIndex < keys.length - 1) {
+                            this.timeIntervalLabels.push(key.toString() + ' - ' + keys[timeIndex + 1]);
+                        } else {
+                            this.timeIntervalLabels.push(key.toString() + ' - ' + this.endTime);
+                        }
+
+                        // Add data to correct pie chart
+                        data[timeIndex] = [];
+                        labels.forEach(() => data[timeIndex].push(0));
+                        Object.keys(result[key]).forEach((category, categoryIndex) => {
+                            data[timeIndex][categoryIndex] += Math.round(result[key][category] / numberOfStores);
+                        });
+                    });
+
+                    this.ageDistributionData = data;
+                    this.graphLoading = false;
+                },
+                (res: HttpErrorResponse) => {
+                    this.onError(res.message);
+                    this.graphLoading = false;
+                }
+            );
     }
 
     ngOnInit() {
@@ -103,9 +122,23 @@ export class AgeDistributionComponent implements OnInit {
         this.updateTable();
     }
 
-    selectChartType(chartType) {
-        this.selectedChartType = chartType;
-        this.activitiesChartType = this.selectedChartType.type;
+    selectAgeInterval(interval: number) {
+        this.ageInterval = interval;
+        this.updateTable();
+    }
+
+    selectTimeInterval(interval: number) {
+        this.timeInterval = interval;
+        this.updateTable();
+    }
+
+    selectStartTime(startTime: string) {
+        this.startTime = startTime;
+        this.updateTable();
+    }
+
+    selectEndTime(endTime: string) {
+        this.endTime = endTime;
         this.updateTable();
     }
 

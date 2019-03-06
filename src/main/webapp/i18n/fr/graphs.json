@@ -3,9 +3,8 @@
         "graphs": {
             "title": "Grafiques",
             "tabs": {
-                "activity": "Activité",
                 "age-distribution": "Répartition par âge",
-                "demo": "Démo"
+                "gender-distribution": "Répartition par sexe"
             },
             "options": {
                 "store": "Magasin",

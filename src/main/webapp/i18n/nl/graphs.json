@@ -3,9 +3,8 @@
         "graphs": {
             "title": "Grafieken",
             "tabs": {
-                "activity": "Activiteit",
-                "age-distribution": "Leeftijdsverdeling",
-                "demo": "Demo"
+                "age-distribution": "Verdeling per leeftijd",
+                "gender-distribution": "Verdeling per geslacht"
             },
             "options": {
                 "store": "Winkel",

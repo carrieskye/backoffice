@@ -24,7 +24,7 @@
         "bootstrap": "4.2.1",
         "chart.js": "^2.7.3",
         "core-js": "2.6.3",
-        "moment": "2.24.0",
+        "moment": "^2.24.0",
         "ng-jhipster": "0.9.1",
         "ng2-charts": "^1.6.0",
         "ngx-cookie": "2.0.1",

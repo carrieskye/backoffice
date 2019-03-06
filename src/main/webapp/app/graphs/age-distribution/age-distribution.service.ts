@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Moment } from 'moment';
-import { IActivity } from 'app/shared/model/activity.model';
 import { IAgeDistribution } from 'app/shared/model/age-distribution.model';
 
 @Injectable({
@@ -14,9 +13,13 @@ export class AgeDistributionService {
 
     constructor(protected http: HttpClient) {}
 
-    query(store: number, interval?: number): Observable<any> {
+    query(store: number, interval?: number, ageInterval?: number, timeStart?: string, timeEnd?: string): Observable<any> {
         let url = this.resourceUrl;
-        url += interval ? '?interval=' + interval + '&store=' + store : '?store=' + store;
+        url += '?store=' + store;
+        url += interval ? '&interval=' + interval : '';
+        url += ageInterval ? '&ageInterval=' + ageInterval : '';
+        url += timeStart ? '&timeStart=' + timeStart : '';
+        url += timeEnd ? '&timeEnd=' + timeEnd : '';
         return this.http.get<Map<Moment, IAgeDistribution>>(url, { observe: 'body' });
     }
 }

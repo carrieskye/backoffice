@@ -10,12 +10,31 @@
                         {{selectedDevice.postalCode > 0 ? selectedDevice.postalCode + ' - ' : ''}}{{selectedDevice.name}}
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownStores">
-                        <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
+                        <button class="dropdown-item" *ngFor="let device of deviceOptions"
+                                (click)="selectStore(device)">
                             {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
                         </button>
                     </div>
                 </div>
             </div>
+
+            <div class="btn-group mr-3">
+                <button type="button" class="btn btn-outline-default" disabled>
+                    <span>Time interval</span>
+                </button>
+                <div ngbDropdown>
+                    <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
+                        {{timeInterval}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownTimeInterval">
+                        <button class="dropdown-item" *ngFor="let option of timeIntervalOptions"
+                                (click)="selectTimeInterval(option)">
+                            {{option}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
                     <span jhiTranslate="backofficeApp.graphs.options.chart-type">Chart type</span>
@@ -25,7 +44,7 @@
                         {{selectedChartType.name}}
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownChartType">
-                        <button class="dropdown-item" *ngFor="let chartType of chartTypes"
+                        <button class="dropdown-item" *ngFor="let chartType of chartTypeOptions"
                                 (click)="selectChartType(chartType)">
                             {{chartType.name}}
                         </button>

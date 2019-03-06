@@ -3,9 +3,8 @@
         "graphs": {
             "title": "Graphs",
             "tabs": {
-                "activity": "Activity",
                 "age-distribution": "Age distribution",
-                "demo": "Demo"
+                "gender-distribution": "Gender distribution"
             },
             "options": {
                 "store": "Store",

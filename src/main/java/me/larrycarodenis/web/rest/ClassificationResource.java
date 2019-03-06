@@ -86,14 +86,14 @@ public class ClassificationResource {
     }
 
     /**
-     * GET  /classifications : get all the classifications grouped by PersonId
+     * GET  /classifications/grouped : get all the classifications grouped by PersonId and DeviceId
      *
      * @return the ResponseEntity with status 200 (OK) and the list of classifications in body
      */
     @GetMapping("/classifications/grouped")
     public List<ClassificationWithDuration> getAllPersonClassifications() {
-        log.debug("REST request to get all Classifications");
-        return classificationRepository.findAllGrouped();
+        log.debug("REST request to get all Classifications Grouped");
+        return classificationRepository.findAllGrouped(classificationRepository.findAll());
     }
 
     /**

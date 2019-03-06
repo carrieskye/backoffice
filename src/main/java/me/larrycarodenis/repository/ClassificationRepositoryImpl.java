@@ -20,14 +20,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ClassificationRepositoryImpl implements ClassificationRepositoryCustom {
-    @Autowired
-    private EntityManager entityManager;
-
     @Override
-    public List<ClassificationWithDuration> findAllGrouped() {
-        // get all classifications
-        List<Classification> classifications = entityManager.createQuery("Select c from Classification c", Classification.class).getResultList();
-
+    public List<ClassificationWithDuration> findAllGrouped(List<Classification> classifications) {
         // group by "personId @ deviceId @ yyyy-MM-dd_hh:mm"
         Map<String, List<Classification>> classificationsPerPerson = classifications.stream()
             .collect(Collectors.groupingBy(

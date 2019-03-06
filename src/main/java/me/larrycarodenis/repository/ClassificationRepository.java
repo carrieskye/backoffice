@@ -13,11 +13,12 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ClassificationRepository extends JpaRepository<Classification, Long> {
+public interface ClassificationRepository extends JpaRepository<Classification, Long>, ClassificationRepositoryCustom {
 
-    public List<Classification> getAllByDevice_Id(long id);
-    public Long countByGender(Gender gender);
-    public Classification findTopByOrderByIdDesc();
+    List<Classification> getAllByDevice_Id(long id);
+    Long countByGender(Gender gender);
+    Classification findTopByOrderByIdDesc();
+    List<Classification> findAll();
 
     @Query(value = "select avg(c.age) from Classification c")
     double averageAge();

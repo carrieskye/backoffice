@@ -7,8 +7,20 @@
                 "gender-distribution": "Répartition par sexe"
             },
             "options": {
-                "store": "Magasin",
-                "chart-type": "Type de graphique"
+                "store": {
+                    "label": "Magasin",
+                    "all": "Tous magasins"
+                },
+                "chart-type": {
+                    "label": "Type de graphique",
+                    "bar-chart": "Diagramme à bandes",
+                    "line-chart": "Diagramme à lignes"
+                },
+                "age-interval": "Intervalle d'âge",
+                "time-interval-hours": "Intervalle de temps (h)",
+                "time-interval-minutes": "Intervalle de temps (m)",
+                "start-time": "Heure de début",
+                "end-time": "Heure de fin"
             }
         }
     }

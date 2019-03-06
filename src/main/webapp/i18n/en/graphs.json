@@ -7,8 +7,20 @@
                 "gender-distribution": "Gender distribution"
             },
             "options": {
-                "store": "Store",
-                "chart-type": "Chart type"
+                "store": {
+                    "label": "Store",
+                    "all": "All stores"
+                },
+                "chart-type": {
+                    "label": "Chart type",
+                    "bar-chart": "Bar chart",
+                    "line-chart": "Line chart"
+                },
+                "age-interval": "Age range",
+                "time-interval-hours": "Time range (h)",
+                "time-interval-minutes": "Time range (m)",
+                "start-time": "Start time",
+                "end-time": "End time"
             }
         }
     }

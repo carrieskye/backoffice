@@ -3,13 +3,21 @@
         <div style="text-align:right">
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.store">Store</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.store.label">Store</span>
                 </button>
                 <div ngbDropdown *ngIf="selectedDevice">
                     <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
-                        {{selectedDevice.postalCode > 0 ? selectedDevice.postalCode + ' - ' : ''}}{{selectedDevice.name}}
+                        <span
+                            *ngIf="selectedDevice.postalCode > 0"> {{selectedDevice.postalCode}}
+                            - {{selectedDevice.name}}
+                        </span>
+                        <span *ngIf="selectedDevice.postalCode ===0"
+                              jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownStores">
+                        <button class="dropdown-item" (click)="selectAllStores()">
+                            <span jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                        </button>
                         <button class="dropdown-item" *ngFor="let device of deviceOptions"
                                 (click)="selectStore(device)">
                             {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
@@ -20,7 +28,7 @@
 
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span>Time interval</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.time-interval-minutes">Time range</span>
                 </button>
                 <div ngbDropdown>
                     <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
@@ -37,16 +45,23 @@
 
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.chart-type">Chart type</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.chart-type.label">Chart type</span>
                 </button>
                 <div ngbDropdown *ngIf="selectedDevice">
                     <button class="btn btn-outline-primary" id="dropdownChartType" ngbDropdownToggle>
-                        {{selectedChartType.name}}
+                        <span *ngIf="activitiesChartType==='bar'"
+                              jhiTranslate="backofficeApp.graphs.options.chart-type.bar-chart">Bar chart
+                        </span>
+                        <span *ngIf="activitiesChartType==='line'"
+                              jhiTranslate="backofficeApp.graphs.options.chart-type.line-chart">Line chart
+                        </span>
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownChartType">
-                        <button class="dropdown-item" *ngFor="let chartType of chartTypeOptions"
-                                (click)="selectChartType(chartType)">
-                            {{chartType.name}}
+                        <button class="dropdown-item" (click)="selectChartType('bar')">
+                            <span jhiTranslate="backofficeApp.graphs.options.chart-type.bar-chart">Bar chart</span>
+                        </button>
+                        <button class="dropdown-item" (click)="selectChartType('line')">
+                            <span jhiTranslate="backofficeApp.graphs.options.chart-type.line-chart">Line chart</span>
                         </button>
                     </div>
                 </div>
@@ -61,7 +76,7 @@
                             [labels]="activitiesLabels"
                             [options]="activitiesOptions"
                             [legend]="activitiesLegend"
-                            [chartType]="selectedChartType.type"></canvas>
+                            [chartType]="activitiesChartType"></canvas>
                 </div>
             </div>
         </div>

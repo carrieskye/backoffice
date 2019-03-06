@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JhiAlertService } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IDevice } from 'app/shared/model/device.model';
+import { IDevice, Device } from 'app/shared/model/device.model';
 import { filter, map } from 'rxjs/operators';
 import { ActivityService } from 'app/graphs/activity/activity.service';
 import { DeviceService } from 'app/entities/device';
@@ -17,15 +17,13 @@ export class ActivityComponent implements OnInit {
 
     deviceOptions: IDevice[] = [];
     timeIntervalOptions = [15, 30, 60, 120];
-    chartTypeOptions = [{ type: 'bar', name: 'Bar Chart' }, { type: 'line', name: 'Line chart' }];
 
-    selectedDevice: IDevice;
+    selectedDevice = new Device(-1, 'All', 0);
     timeInterval = 15;
-    selectedChartType = this.chartTypeOptions[0];
 
     activitiesLabels: string[] = [];
     activitiesData: any[] = [{ data: [], label: 'F' }, { data: [], label: 'M' }];
-    activitiesChartType = this.selectedChartType.type;
+    activitiesChartType = 'bar';
     activitiesLegend = true;
     activitiesOptions: any = { scaleShowVerticalLines: false, responsive: true };
 
@@ -45,12 +43,10 @@ export class ActivityComponent implements OnInit {
             )
             .subscribe(
                 (res: IDevice[]) => {
-                    const allDevices = { id: -1, name: 'All', postalCode: 0, homepage: null };
-                    this.deviceOptions.push(allDevices);
-                    res.forEach(device => this.deviceOptions.push(device));
+                    this.deviceOptions = res;
 
                     if (this.deviceOptions.length > 0) {
-                        this.selectStore(this.deviceOptions[0]);
+                        this.selectStore(this.selectedDevice);
                     }
                     this.devicesLoading = false;
                 },
@@ -106,9 +102,13 @@ export class ActivityComponent implements OnInit {
         this.updateTable();
     }
 
+    selectAllStores() {
+        this.selectedDevice = new Device(-1, 'All', 0);
+        this.updateTable();
+    }
+
     selectChartType(chartType) {
-        this.selectedChartType = chartType;
-        this.activitiesChartType = this.selectedChartType.type;
+        this.activitiesChartType = chartType;
         this.updateTable();
     }
 

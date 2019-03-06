@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JhiAlertService } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IDevice } from 'app/shared/model/device.model';
+import { Device, IDevice } from 'app/shared/model/device.model';
 import { filter, map } from 'rxjs/operators';
 import { DeviceService } from 'app/entities/device';
 import { AgeDistributionService } from 'app/graphs/age-distribution/age-distribution.service';
@@ -21,7 +21,7 @@ export class AgeDistributionComponent implements OnInit {
     startTimeOptions = ['09:00', '10:00', '11:00'];
     endTimeOptions = ['17:00', '18:00', '19:00'];
 
-    selectedDevice: IDevice;
+    selectedDevice = new Device(-1, 'All', 0);
     ageInterval = 20;
     timeInterval = 3;
     startTime = '09:00';
@@ -50,12 +50,10 @@ export class AgeDistributionComponent implements OnInit {
             )
             .subscribe(
                 (res: IDevice[]) => {
-                    const allDevices = { id: -1, name: 'All', postalCode: 0, homepage: null };
-                    this.deviceOptions.push(allDevices);
-                    res.forEach(device => this.deviceOptions.push(device));
+                    this.deviceOptions = res;
 
                     if (this.deviceOptions.length > 0) {
-                        this.selectStore(this.deviceOptions[0]);
+                        this.selectStore(this.selectedDevice);
                     }
                     this.devicesLoading = false;
                 },
@@ -119,6 +117,11 @@ export class AgeDistributionComponent implements OnInit {
 
     selectStore(device: IDevice) {
         this.selectedDevice = device;
+        this.updateTable();
+    }
+
+    selectAllStores() {
+        this.selectedDevice = new Device(-1, 'All', 0);
         this.updateTable();
     }
 

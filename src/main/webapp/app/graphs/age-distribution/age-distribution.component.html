@@ -3,14 +3,23 @@
         <div style="text-align:right">
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.store">Store</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.store.label">Store</span>
                 </button>
                 <div ngbDropdown *ngIf="selectedDevice">
                     <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
-                        {{selectedDevice.postalCode > 0 ? selectedDevice.postalCode + ' - ' : ''}}{{selectedDevice.name}}
+                        <span
+                            *ngIf="selectedDevice.postalCode > 0"> {{selectedDevice.postalCode}}
+                            - {{selectedDevice.name}}
+                        </span>
+                        <span *ngIf="selectedDevice.postalCode ===0"
+                              jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownStores">
-                        <button class="dropdown-item" *ngFor="let device of deviceOptions" (click)="selectStore(device)">
+                        <button class="dropdown-item" (click)="selectAllStores()">
+                            <span jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                        </button>
+                        <button class="dropdown-item" *ngFor="let device of deviceOptions"
+                                (click)="selectStore(device)">
                             {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
                         </button>
                     </div>
@@ -19,7 +28,7 @@
 
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span>Age interval</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.age-interval">Age range</span>
                 </button>
                 <div ngbDropdown>
                     <button class="btn btn-outline-primary" id="dropdownAge" ngbDropdownToggle>
@@ -36,7 +45,7 @@
 
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span>Time interval</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.time-interval-hours">Time range</span>
                 </button>
                 <div ngbDropdown>
                     <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
@@ -53,7 +62,7 @@
 
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span>Start time</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.start-time">Start time</span>
                 </button>
                 <div ngbDropdown>
                     <button class="btn btn-outline-primary" id="dropdownStartTime" ngbDropdownToggle>
@@ -70,7 +79,7 @@
 
             <div class="btn-group mr-3">
                 <button type="button" class="btn btn-outline-default" disabled>
-                    <span>End time</span>
+                    <span jhiTranslate="backofficeApp.graphs.options.end-time">End time</span>
                 </button>
                 <div ngbDropdown>
                     <button class="btn btn-outline-primary" id="dropdownEndTime" ngbDropdownToggle>

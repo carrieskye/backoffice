@@ -7,8 +7,20 @@
                 "gender-distribution": "Verdeling per geslacht"
             },
             "options": {
-                "store": "Winkel",
-                "chart-type": "Soort grafiek"
+                "store": {
+                    "label": "Winkel",
+                    "all": "Alle winkels"
+                },
+                "chart-type": {
+                    "label": "Soort grafiek",
+                    "bar-chart": "Staafdiagram",
+                    "line-chart": "Lijngrafiek"
+                },
+                "age-interval": "Leeftijdsinterval",
+                "time-interval-hours": "Tijdsinterval (u)",
+                "time-interval-minutes": "Tijdsinterval (m)",
+                "start-time": "Startuur",
+                "end-time": "Einduur"
             }
         }
     }

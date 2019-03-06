@@ -2,6 +2,7 @@ package me.larrycarodenis.web.rest;
 
 import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.Metrics;
+import me.larrycarodenis.domain.enumeration.Gender;
 import me.larrycarodenis.repository.ClassificationRepository;
 import me.larrycarodenis.repository.DeviceRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController()
@@ -37,50 +37,29 @@ public class AdminResource {
     {
         Metrics metrics = new Metrics();
 
-        LocalTime classificationTime = LocalTime.from(classificationRepository.findTopByOrderByIdDesc().getTimestamp().atZone(ZoneId.of("GMT+1")));
-        metrics.setLastClassification(classificationTime);
+        // Last classification
+        metrics.setLastClassification(classificationRepository.findTopByOrderByIdDesc());
 
-        metrics.setNumberOfStores(deviceRepository.findAll().size());
+        // counts
+        int numberOfClassifications = (int)classificationRepository.count();
+        int numberOfDevices = (int)deviceRepository.count();
+        metrics.setNumberOfClassifications(numberOfClassifications);
+        metrics.setNumberOfDevices(numberOfDevices);
 
-        int male = 0;
-        int female = 0;
+        // ratio female/total
+        long females = classificationRepository.countByGender(Gender.FEMALE);
+        long males = classificationRepository.countByGender(Gender.MALE);
+        double ratio =  (double)females / (females + males);
+        metrics.setFemaleRatio(ratio);
 
-        for(Classification classification : classificationRepository.findAll())
-        {
-            if(classification.getGender().equals("MALE"))
-            {
-                male++;
-            }
-            else if(classification.getGender().equals("FEMALE"))
-            {
-                female++;
-            }
-        }
-        if(female == 0)
-        {
-            metrics.setFemaleRatio(0);
-        }
-        else
-        {
-            int tot = male + female;
-            metrics.setFemaleRatio(female / tot);
-        }
+        // average age
+        metrics.setAverageAge((int) classificationRepository.averageAge());
 
-        int sum = 0;
-
-        for(Classification classification : classificationRepository.findAll())
-        {
-            sum = sum + classification.getAge();
-        }
-        metrics.setAgeMedian(sum/classificationRepository.findAll().size());
-
-        List<Classification> result = classificationRepository.findAll().stream().filter(distinctByKey(classification -> classification.getPersonId() + classification.getDevice().getId())).collect(Collectors.toList());
-        for(Classification cl : result)
-        {
-            System.out.println("Classification with: " + cl.getPersonId() + " At time: " + cl.getTimestamp());
-        }
-        metrics.setDistinctCustomers(result.size());
-
+        // distinct customers
+        long distinctCustomers = classificationRepository.findAll().stream()
+            .filter(distinctByKey(classification -> classification.getPersonId() + classification.getDevice().getId()))
+            .collect(Collectors.counting());
+        metrics.setDistinctCustomers((int)distinctCustomers);
 
         return metrics;
     }

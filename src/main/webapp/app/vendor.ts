@@ -40,7 +40,11 @@ import {
     faAsterisk,
     faTasks,
     faHome,
-    faChartBar
+    faChartBar,
+    faTv,
+    faCamera,
+    faBirthdayCake,
+    faVenusMars
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
@@ -79,6 +83,10 @@ library.add(faTrashAlt);
 library.add(faUser);
 library.add(faUserPlus);
 library.add(faWrench);
+library.add(faTv);
+library.add(faCamera);
+library.add(faBirthdayCake);
+library.add(faVenusMars);
 
 // add ng2-charts chart.js
 import 'chart.js/src/chart.js';

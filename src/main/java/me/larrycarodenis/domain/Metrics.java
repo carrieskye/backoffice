@@ -1,70 +1,63 @@
 package me.larrycarodenis.domain;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 
-public class Metrics
-{
-    private int numberOfStores;
+public class Metrics {
+    private int numberOfDevices;
+    private int numberOfClassifications;
     private double femaleRatio;
-    private LocalTime lastClassification;
-    private double ageMedian;
+    private int averageAge;
     private int distinctCustomers;
+    private Classification lastClassification;
 
-    public Metrics()
-    {
 
+    public int getNumberOfDevices() {
+        return numberOfDevices;
     }
 
-    public int getNumberOfStores() {
-        return numberOfStores;
+    public void setNumberOfDevices(int numberOfDevices) {
+        this.numberOfDevices = numberOfDevices;
     }
 
-    public void setNumberOfStores(int numberOfStores) {
-        this.numberOfStores = numberOfStores;
+    public int getNumberOfClassifications() {
+        return numberOfClassifications;
+    }
+
+    public void setNumberOfClassifications(int numberOfClassifications) {
+        this.numberOfClassifications = numberOfClassifications;
     }
 
     public double getFemaleRatio() {
         return femaleRatio;
     }
 
-    public void setFemaleRatio(double maleFemaleRatio) {
-        this.femaleRatio = maleFemaleRatio;
+    public void setFemaleRatio(double femaleRatio) {
+        this.femaleRatio = femaleRatio;
     }
 
-    public LocalTime getLastClassification() {
-        return lastClassification;
+    public int getAverageAge() {
+        return averageAge;
     }
 
-    public void setLastClassification(LocalTime lastClassification) {
-        this.lastClassification = lastClassification;
+    public void setAverageAge(int averageAge) {
+        this.averageAge = averageAge;
     }
 
-    public double getAgeMedian() {
-        return ageMedian;
-    }
-
-    public void setAgeMedian(double ageMedian) {
-        this.ageMedian = ageMedian;
-    }
-
-    public int getDistinctCustomers()
-    {
+    public int getDistinctCustomers() {
         return distinctCustomers;
     }
 
-    public void setDistinctCustomers(int distinctCustomers)
-    {
+    public void setDistinctCustomers(int distinctCustomers) {
         this.distinctCustomers = distinctCustomers;
     }
 
-    public String toString()
-    {
-        return "AgeMedian: " + getAgeMedian() + "Female ratio: " + getFemaleRatio() + "LastClassification: " + getLastClassification() + "Number of stores: " + getNumberOfStores();
+    public Classification getLastClassification() {
+        return lastClassification;
     }
 
-
-
-
+    public void setLastClassification(Classification lastClassification) {
+        this.lastClassification = lastClassification;
+    }
 
 }

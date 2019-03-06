@@ -7,11 +7,11 @@
                 </button>
                 <div ngbDropdown *ngIf="selectedDevice">
                     <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
-                        {{selectedDevice.postalCode}} - {{selectedDevice.name}}
+                        {{selectedDevice.postalCode > 0 ? selectedDevice.postalCode + ' - ' : ''}}{{selectedDevice.name}}
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownStores">
                         <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
-                            {{device.postalCode}} - {{device.name}}
+                            {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
                         </button>
                     </div>
                 </div>
@@ -25,7 +25,8 @@
                         {{selectedChartType.name}}
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownChartType">
-                        <button class="dropdown-item" *ngFor="let chartType of chartTypes" (click)="selectChartType(chartType)">
+                        <button class="dropdown-item" *ngFor="let chartType of chartTypes"
+                                (click)="selectChartType(chartType)">
                             {{chartType.name}}
                         </button>
                     </div>

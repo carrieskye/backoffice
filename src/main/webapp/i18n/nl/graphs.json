@@ -1,21 +1,11 @@
 {
     "backofficeApp": {
         "graphs": {
-            "general": {
-                "title": "Algemene grafieken",
-                "tabs": {
-                    "activity": "Activiteit",
-                    "age-distribution": "Leeftijdsverdeling",
-                    "demo": "Demo"
-                }
-            },
-            "stores": {
-                "title": "Grafieken per winkel",
-                "tabs": {
-                    "activity": "Activiteit",
-                    "age-distribution": "Leeftijdsverdeling",
-                    "demo": "Demo"
-                }
+            "title": "Grafieken",
+            "tabs": {
+                "activity": "Activiteit",
+                "age-distribution": "Leeftijdsverdeling",
+                "demo": "Demo"
             },
             "options": {
                 "store": "Winkel",

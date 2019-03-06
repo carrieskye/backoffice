@@ -1,21 +1,11 @@
 {
     "backofficeApp": {
         "graphs": {
-            "general": {
-                "title": "Grafiques générals",
-                "tabs": {
-                    "activity": "Activité",
-                    "age-distribution": "Répartition par âge",
-                    "demo": "Démo"
-                }
-            },
-            "stores": {
-                "title": "Grafiques des magasins",
-                "tabs": {
-                    "activity": "Activité",
-                    "age-distribution": "Répartition par âge",
-                    "demo": "Démo"
-                }
+            "title": "Grafiques",
+            "tabs": {
+                "activity": "Activité",
+                "age-distribution": "Répartition par âge",
+                "demo": "Démo"
             },
             "options": {
                 "store": "Magasin",

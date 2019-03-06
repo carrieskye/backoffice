@@ -1,7 +1,8 @@
 <nav class="navbar navbar-dark navbar-expand-md bg-dark">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
         <svg width="44" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.61 139.16">
-            <polygon points="27.89 70.56 0 70.56 0 139.16 93.35 70.56 120.61 70.56 27.89 0 27.89 70.56" style="fill: #00a9cf"></polygon>
+            <polygon points="27.89 70.56 0 70.56 0 139.16 93.35 70.56 120.61 70.56 27.89 0 27.89 70.56"
+                     style="fill: #00a9cf"></polygon>
         </svg>
         <span jhiTranslate="global.title" class="navbar-title">Digital Signage Backoffice</span>
     </a>
@@ -23,29 +24,15 @@
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
 
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact:true}">
-                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="graphs-menu">
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="graphs" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="chart-bar"></fa-icon>
                         <span jhiTranslate="global.menu.graphs.main">Graphs</span>
                     </span>
                 </a>
-                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="graphs-menu">
-                    <li>
-                        <a class="dropdown-item" routerLink="general" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <span jhiTranslate="global.menu.graphs.general">General</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="stores" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <span jhiTranslate="global.menu.graphs.stores">Stores</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
+
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">

@@ -8,10 +8,11 @@ import { JhiLanguageHelper } from 'app/core';
 import { ChartsModule } from 'ng2-charts';
 import { JhiLanguageService } from 'ng-jhipster';
 import { ActivityComponent } from 'app/graphs/activity/activity.component';
+import { AgeDistributionComponent } from 'app/graphs/age-distribution/age-distribution.component';
 
 @NgModule({
     imports: [BackofficeSharedModule, ChartsModule, RouterModule.forChild([GRAPHS_ROUTE])],
-    declarations: [GraphsComponent, ActivityComponent],
+    declarations: [GraphsComponent, ActivityComponent, AgeDistributionComponent],
     entryComponents: [GraphsComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

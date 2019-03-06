@@ -87,7 +87,8 @@
                     "minlength": "Uw email moet minstens 5 tekens lang zijn.",
                     "maxlength": "Uw email kan niet langer zijn dan 50 tekens."
                 }
-            }
+            },
+            "loading": "Laden..."
         },
         "field": {
             "id": "ID"

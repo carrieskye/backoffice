@@ -32,6 +32,7 @@ import {
     faSort,
     faSortDown,
     faSortUp,
+    faSpinner,
     faSync,
     faTachometerAlt,
     faTasks,
@@ -81,6 +82,7 @@ library.add(faSignOutAlt);
 library.add(faSort);
 library.add(faSortDown);
 library.add(faSortUp);
+library.add(faSpinner);
 library.add(faSync);
 library.add(faTachometerAlt);
 library.add(faTasks);

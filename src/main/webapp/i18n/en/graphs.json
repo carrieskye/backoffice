@@ -1,21 +1,15 @@
 {
     "backofficeApp": {
         "graphs": {
-            "general": {
-                "title": "General graphs",
-                "tabs": {
-                    "activity": "Activity",
-                    "age-distribution": "Age distribution",
-                    "demo": "Demo"
-                }
+            "title": "Graphs",
+            "tabs": {
+                "activity": "Activity",
+                "age-distribution": "Age distribution",
+                "demo": "Demo"
             },
-            "stores": {
-                "title": "Graphs per store",
-                "tabs": {
-                    "activity": "Activity",
-                    "age-distribution": "Age distribution",
-                    "demo": "Demo"
-                }
+            "options": {
+                "store": "Store",
+                "chart-type": "Chart type"
             }
         }
     }

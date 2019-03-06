@@ -17,8 +17,8 @@ export class ActivityComponent implements OnInit {
     selectedDevice: IDevice;
 
     activitiesLabels: string[] = [];
-    activitiesData: any[] = [{ data: [], label: 'Male' }, { data: [], label: 'Female' }];
-    activitiesChartType = 'bar';
+    activitiesData: any[] = [{ data: [], label: 'F' }, { data: [], label: 'M' }];
+    activitiesChartType = 'line';
     activitiesLegend = true;
     activitiesOptions: any = { scaleShowVerticalLines: false, responsive: true };
 
@@ -62,7 +62,7 @@ export class ActivityComponent implements OnInit {
                     femaleData.push(result[key]['f']);
                 });
 
-                this.activitiesData = [{ data: maleData, label: 'Male' }, { data: femaleData, label: 'Female' }];
+                this.activitiesData = [{ data: femaleData, label: 'F' }, { data: maleData, label: 'M' }];
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );

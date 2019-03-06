@@ -2,10 +2,20 @@
     "backofficeApp": {
         "graphs": {
             "general": {
-                "title": "Grafiques générals"
+                "title": "Grafiques générals",
+                "tabs": {
+                    "activity": "Activité",
+                    "age-distribution": "Répartition par âge",
+                    "demo": "Démo"
+                }
             },
             "stores": {
-                "title": "Grafiques des magasins"
+                "title": "Grafiques des magasins",
+                "tabs": {
+                    "activity": "Activité",
+                    "age-distribution": "Répartition par âge",
+                    "demo": "Démo"
+                }
             }
         }
     }

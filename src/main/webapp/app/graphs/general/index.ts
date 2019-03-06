@@ -1,3 +1,4 @@
-export * from '../../entities/classification/classification.service';
-export * from './demo/demo.component';
 export * from './general.route';
+export * from './demo/demo.component';
+export * from './activity/activity.component';
+export * from './age-distribution/age-distribution.component';

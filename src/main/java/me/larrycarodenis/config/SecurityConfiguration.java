@@ -111,6 +111,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/devices/{id}").permitAll()
             .antMatchers("/api/devices/{id}/slides").permitAll()
             .antMatchers("/api/admin/metrics").permitAll()
+            .antMatchers("/api/admin/ip/").permitAll()
             .antMatchers("/api/devices").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)

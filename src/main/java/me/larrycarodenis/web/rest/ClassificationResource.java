@@ -1,5 +1,6 @@
 package me.larrycarodenis.web.rest;
 import me.larrycarodenis.domain.Classification;
+import me.larrycarodenis.domain.ClassificationWithDuration;
 import me.larrycarodenis.repository.ClassificationRepository;
 import me.larrycarodenis.web.rest.errors.BadRequestAlertException;
 import me.larrycarodenis.web.rest.util.HeaderUtil;
@@ -82,6 +83,17 @@ public class ClassificationResource {
     public List<Classification> getAllClassifications() {
         log.debug("REST request to get all Classifications");
         return classificationRepository.findAll();
+    }
+
+    /**
+     * GET  /classifications/grouped : get all the classifications grouped by PersonId and DeviceId
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of classifications in body
+     */
+    @GetMapping("/classifications/grouped")
+    public List<ClassificationWithDuration> getAllPersonClassifications() {
+        log.debug("REST request to get all Classifications Grouped");
+        return classificationRepository.findAllGrouped(classificationRepository.findAll());
     }
 
     /**

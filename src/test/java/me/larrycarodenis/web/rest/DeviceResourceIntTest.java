@@ -71,7 +71,7 @@ public class DeviceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DeviceResource deviceResource = new DeviceResource(deviceRepository);
+        final DeviceResource deviceResource = new DeviceResource(deviceRepository, null);
         this.restDeviceMockMvc = MockMvcBuilders.standaloneSetup(deviceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

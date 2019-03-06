@@ -1,3 +1,3 @@
-export * from '../../entities/classification/classification.service';
-export * from './demo/demo.component';
 export * from './stores.route';
+export * from './demo/demo.component';
+export * from './activity/activity.component';

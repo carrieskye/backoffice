@@ -35,6 +35,111 @@ public class StatisticsResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of devices in body
      */
+
+    @GetMapping("/agetimedistribution")
+    public Map<LocalTime, Map<Integer, Integer>> getAgeTimeDistribution(@RequestParam(name = "start", required = true) @DateTimeFormat(pattern="ddMMyyyy") Date startPeriod,
+                                                    @RequestParam(name = "end", required = true) @DateTimeFormat(pattern = "ddMMyyyy") Date endPeriod,
+                                                    @RequestParam(name = "ageinterval", required = false, defaultValue = "10") Integer ageInterval,
+                                                    @RequestParam(name = "timeinterval", required = false, defaultValue = "10") Integer timeInterval,
+                                                    @RequestParam(name = "store", required = false, defaultValue = "-1") Long store)
+    {
+
+
+        LocalTime timeStart = LocalTime.of(9, 0);
+        LocalTime timeEnd = LocalTime.of(19, 0);
+
+        LocalDate beginDate  = LocalDate.now();
+        LocalDate endDate = LocalDate.of(1970, 01, 01);
+
+        LocalTime timePointer = timeStart;
+        Map<LocalTime, Map<Integer, Integer>> data = new HashMap<>();
+
+        List<Classification> classificationList;
+        groupClassifications();
+
+        if(store == -1)
+        {
+            classificationList = groupClassifications();
+        }
+        else
+        {
+            List<Classification> list = groupClassifications();
+
+            classificationList = new ArrayList<>();
+
+            for(Classification classification : list)
+            {
+                System.out.println(classification.getDevice().getId());
+                if(classification.getDevice().getId().equals(store) )
+                {
+                    classificationList.add(classification);
+                }
+            }
+        }
+
+        for(Classification classification : classificationList)
+        {
+            LocalDate classificationDate = LocalDate.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
+
+            if (classificationDate.isBefore(beginDate)) {
+                beginDate = classificationDate;
+            }
+            if (classificationDate.isAfter(endDate)) {
+                endDate = classificationDate;
+            }
+        }
+
+        int totalDays = (int) DAYS.between(beginDate, endDate);
+
+
+
+
+
+        while (timePointer.isBefore(timeEnd))
+        {
+            int male = 0;
+            int female = 0;
+            Map<Integer, Integer> ageDistr = new HashMap<>();
+            for(Classification classification : classificationList)
+            {
+
+                LocalTime classificationTime = LocalTime.from(classification.getTimestamp().atZone(ZoneId.of("GMT+1")));
+
+                if (classificationTime.isAfter(timePointer) && classificationTime.isBefore(timePointer.plusMinutes(timeInterval)))
+                {
+
+                    int beginAge = 0;
+                    int endAge = 90;
+                    int pointer = beginAge;
+
+
+                    while(pointer < endAge)
+                    {
+                        int counter = 0;
+
+                        for(Classification c : classificationList)
+                        {
+                            if(c.getAge() > pointer && c.getAge() < pointer + ageInterval)
+                            {
+                                counter ++;
+                            }
+                        }
+                        ageDistr.put(pointer, counter);
+                        pointer = pointer + ageInterval;
+
+
+                    }
+                }
+            }
+            data.put(timePointer, ageDistr);
+            timePointer = timePointer.plusMinutes(timeInterval);
+        }
+        return data;
+    }
+
+
+
+
     @GetMapping("/activity")
     public Map<LocalTime, GenderTotals> getActivity(
         @RequestParam(required = false, defaultValue = "-1") Long store,

@@ -1,51 +1,55 @@
 /* after changing this file run 'npm run webpack:build' */
 /* tslint:disable */
 import '../content/scss/vendor.scss';
-
-// Imports all fontawesome core and solid icons
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-    faUser,
-    faSort,
-    faSortUp,
-    faSortDown,
-    faSync,
-    faEye,
-    faBan,
-    faTimes,
     faArrowLeft,
-    faSave,
-    faPlus,
-    faPencilAlt,
+    faAsterisk,
+    faBan,
     faBars,
-    faThList,
-    faUserPlus,
-    faRoad,
-    faTachometerAlt,
-    faHeart,
-    faList,
     faBell,
+    faBirthdayCake,
     faBook,
-    faHdd,
-    faFlag,
-    faWrench,
+    faCalendarAlt,
+    faCamera,
+    faChartBar,
     faClock,
     faCloud,
-    faSignOutAlt,
-    faSignInAlt,
-    faCalendarAlt,
-    faSearch,
-    faTrashAlt,
-    faAsterisk,
-    faTasks,
+    faEye,
+    faFlag,
+    faHdd,
+    faHeart,
     faHome,
-    faChartBar,
+    faList,
+    faMars,
+    faPencilAlt,
+    faPlus,
+    faRoad,
+    faSave,
+    faSearch,
+    faSignInAlt,
+    faSignOutAlt,
+    faSort,
+    faSortDown,
+    faSortUp,
+    faSync,
+    faTachometerAlt,
+    faTasks,
+    faThList,
+    faTimes,
+    faTrashAlt,
     faTv,
-    faCamera,
-    faBirthdayCake,
-    faVenusMars
+    faUser,
+    faUsers,
+    faUserPlus,
+    faVenus,
+    faVenusMars,
+    faWrench
 } from '@fortawesome/free-solid-svg-icons';
+// add ng2-charts chart.js
+import 'chart.js/src/chart.js';
+
+// Imports all fontawesome core and solid icons
 
 // Adds the SVG icon to the library so you can use it in your page
 library.add(faArrowLeft);
@@ -53,8 +57,10 @@ library.add(faAsterisk);
 library.add(faBan);
 library.add(faBars);
 library.add(faBell);
+library.add(faBirthdayCake);
 library.add(faBook);
 library.add(faCalendarAlt);
+library.add(faCamera);
 library.add(faChartBar);
 library.add(faClock);
 library.add(faCloud);
@@ -64,6 +70,7 @@ library.add(faHdd);
 library.add(faHeart);
 library.add(faHome);
 library.add(faList);
+library.add(faMars);
 library.add(faPencilAlt);
 library.add(faPlus);
 library.add(faRoad);
@@ -80,15 +87,12 @@ library.add(faTasks);
 library.add(faThList);
 library.add(faTimes);
 library.add(faTrashAlt);
-library.add(faUser);
-library.add(faUserPlus);
-library.add(faWrench);
 library.add(faTv);
-library.add(faCamera);
-library.add(faBirthdayCake);
+library.add(faUser);
+library.add(faUsers);
+library.add(faUserPlus);
+library.add(faVenus);
 library.add(faVenusMars);
-
-// add ng2-charts chart.js
-import 'chart.js/src/chart.js';
+library.add(faWrench);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

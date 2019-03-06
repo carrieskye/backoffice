@@ -1,16 +1,18 @@
 package me.larrycarodenis.web.rest;
+
 import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.Device;
 import me.larrycarodenis.domain.Ip;
 import me.larrycarodenis.repository.ClassificationRepository;
+import me.larrycarodenis.repository.DeviceRecentConnectionsRepository;
 import me.larrycarodenis.repository.DeviceRepository;
 import me.larrycarodenis.repository.IpRepository;
 import me.larrycarodenis.web.rest.errors.BadRequestAlertException;
 import me.larrycarodenis.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.omg.CORBA.ServerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,9 @@ public class DeviceResource {
 
     private IpRepository ipRepository = new IpRepository();
 
+    @Autowired
+    private DeviceRecentConnectionsRepository deviceRecentConnectionsRepository;
+
     public DeviceResource(DeviceRepository deviceRepository, ClassificationRepository classificationReposistory) {
         this.deviceRepository = deviceRepository;
         this.classificationReposistory = classificationReposistory;
@@ -62,34 +67,31 @@ public class DeviceResource {
             .body(result);
     }
 
+    @GetMapping("/devices/recent-connections")
+    public Map<Long, DeviceRecentConnectionsRepository.RecentConnection> getRecentDeviceConnections() {
+        return deviceRecentConnectionsRepository;
+    }
+
+
     @PostMapping("/devices/{id}/export")
-    public ResponseEntity<Classification> saveClassification(HttpServletRequest request, @PathVariable Long id, @RequestBody ArrayList<Classification> data)
-    {
-        System.out.println(request.getRemoteAddr());
+    public void saveClassification(HttpServletRequest request, @PathVariable Long id, @RequestBody ArrayList<Classification> data) {
         ipRepository.save(new Ip(request.getRemoteHost(), id));
+        deviceRecentConnectionsRepository.saveConnection(id, request.getRemoteAddr());
 
-
-        for(Classification classification : data)
-        {
+        for (Classification classification : data) {
             Device device = deviceRepository.findById(id).get();
             classification.setDevice(device);
-            System.out.println("classification:");
-            System.out.println(classification.toString());
             classificationReposistory.save(classification);
-
         }
-        return null;
     }
 
     @GetMapping("/devices/ip")
-    public Map<Long, String> getIp()
-    {
+    public Map<Long, String> getIp() {
         System.out.println("ik ben hier");
         Map<Long, String> ipMap = new HashMap<>();
         List<Ip> ips = ipRepository.findAll();
         System.out.println(ips);
-        for(Ip ip : ips)
-        {
+        for (Ip ip : ips) {
 
             ipMap.put(ip.getDeviceId(), ip.getIp());
         }
@@ -125,7 +127,15 @@ public class DeviceResource {
     @GetMapping("/devices")
     public List<Device> getAllDevices() {
         log.debug("REST request to get all Devices");
-        return deviceRepository.findAll();
+        List<Device> devices = deviceRepository.findAll();
+        for (Device device : devices) {
+            if (deviceRecentConnectionsRepository.containsKey(device.getId()))
+            {
+                device.setLastIp(deviceRecentConnectionsRepository.get(device.getId()).getLastIp());
+                device.setLastConnection(deviceRecentConnectionsRepository.get(device.getId()).getLastConnection());
+            }
+        }
+        return devices;
     }
 
     /**

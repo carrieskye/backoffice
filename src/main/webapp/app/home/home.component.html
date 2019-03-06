@@ -49,3 +49,15 @@
     <h1 class="display-4">Hi Guest!</h1>
     <p>Please request an account to access the back office</p>
 </div>
+<pre>{{devices|json}}</pre>
+<div class="row" *ngIf="isAuthenticated() && devices">
+    <div class="col-md-12">
+        <h2 class="display-4">Live Devices (for debugging)</h2>
+    </div>
+    <div *ngFor="let device of devices ;trackBy: trackId" class="col-md-4">
+        <div>{{device.name}}</div>
+        <div>
+            <img src="http://{{device.lastIp}}:5000/video_viewer" alt="" />
+        </div>
+    </div>
+</div>

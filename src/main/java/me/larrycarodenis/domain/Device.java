@@ -3,6 +3,8 @@ package me.larrycarodenis.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -45,6 +48,29 @@ public class Device implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
     private Set<Slide> slides = new HashSet<>();
+
+    @Transient
+    private String lastIp = null;
+    @Transient
+    private LocalDateTime lastConnection = null;
+
+    @JsonProperty()
+    public String getLastIp() {
+        return lastIp;
+    }
+
+    public void setLastIp(String lastIp) {
+        this.lastIp = lastIp;
+    }
+
+    @JsonProperty()
+    public LocalDateTime getLastConnection() {
+        return lastConnection;
+    }
+
+    public void setLastConnection(LocalDateTime lastConnection) {
+        this.lastConnection = lastConnection;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

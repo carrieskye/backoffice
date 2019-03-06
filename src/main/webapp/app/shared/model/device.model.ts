@@ -7,6 +7,8 @@ export interface IDevice {
     postalCode?: number;
     homepage?: IHomePage;
     slides?: ISlide[];
+    lastIp?: string;
+    lastConnection?: Date;
 }
 
 export class Device implements IDevice {
@@ -15,6 +17,8 @@ export class Device implements IDevice {
         public name?: string,
         public postalCode?: number,
         public homepage?: IHomePage,
-        public slides?: ISlide[]
+        public slides?: ISlide[],
+        public lastIp?: string,
+        public lastConnection?: Date
     ) {}
 }

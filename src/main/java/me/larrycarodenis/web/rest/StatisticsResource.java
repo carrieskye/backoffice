@@ -9,7 +9,6 @@ import me.larrycarodenis.repository.ClassificationRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,11 +46,9 @@ public class StatisticsResource {
         @RequestParam(required = false, defaultValue = "19:00") LocalTime timeEnd
     ) {
         Map<LocalTime, Map<Integer, Integer>> data = new HashMap<>();
-        // get classifications
-        List<Classification> classifications = store == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(store);
 
-        // group by deviceid & personid
-        List<ClassificationWithDuration> classificationsGrouped = classificationRepository.findAllGrouped(classifications);
+        // get classifications
+        List<ClassificationWithDuration> classificationsGrouped = getClassificationsGrouped(store);
 
         // create intervals
         int amountOfIntervals = (int) Math.ceil(MINUTES.between(timeStart, timeEnd) / interval);
@@ -95,10 +92,7 @@ public class StatisticsResource {
         Map<LocalTime, GenderTotals> data = new HashMap<>();
 
         // get classifications
-        List<Classification> classifications = store == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(store);
-
-        // group by deviceid & personid
-        List<ClassificationWithDuration> classificationsGrouped = classificationRepository.findAllGrouped(classifications);
+        List<ClassificationWithDuration> classificationsGrouped = getClassificationsGrouped(store);
 
         // create intervals
         int amountOfIntervals = (int) Math.ceil(MINUTES.between(timeStart, timeEnd) / interval);
@@ -125,14 +119,14 @@ public class StatisticsResource {
         return data;
     }
 
-    /**
-     * Check if moment is between start and end
-     *
-     * @param moment
-     * @param start
-     * @param end
-     * @return
-     */
+    private List<ClassificationWithDuration> getClassificationsGrouped(Long deviceId){
+        // get classifications
+        List<Classification> classifications = deviceId == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(deviceId);
+
+        // group by deviceid & personid
+        return classificationRepository.findAllGrouped(classifications);
+    }
+
     private boolean isBetween(LocalTime moment, LocalTime start, LocalTime end) {
         return (moment.isAfter(start) && moment.isBefore(end));
     }

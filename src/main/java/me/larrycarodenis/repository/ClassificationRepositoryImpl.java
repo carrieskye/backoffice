@@ -2,28 +2,25 @@ package me.larrycarodenis.repository;
 
 import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.ClassificationWithDuration;
-import me.larrycarodenis.domain.Device;
 import me.larrycarodenis.domain.enumeration.Emotion;
 import me.larrycarodenis.domain.enumeration.Gender;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"unused", "unchecked"})
 public class ClassificationRepositoryImpl implements ClassificationRepositoryCustom {
     @Override
-    public List<ClassificationWithDuration> findAllGrouped(List<Classification> classifications) {
+    public List<ClassificationWithDuration> findAllGrouped(List<Classification> originalClassifications) {
         // group by "personId @ deviceId @ yyyy-MM-dd_hh:mm"
-        Map<String, List<Classification>> classificationsPerPerson = classifications.stream()
+        Map<String, List<Classification>> classificationsPerPerson = originalClassifications.stream()
             .collect(Collectors.groupingBy(
                 classification -> classification.getPersonId() + '@'
                     + classification.getDevice().getId() + '@'
@@ -33,51 +30,50 @@ public class ClassificationRepositoryImpl implements ClassificationRepositoryCus
         // for each group get the average age, most common gender, last emotion
 
         return new ArrayList(
-        classificationsPerPerson.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey,
-                e -> {
-                    List<Classification> classifications1 = e.getValue();
-                    ClassificationWithDuration c = new ClassificationWithDuration();
+            classificationsPerPerson.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                    e -> {
+                        List<Classification> classifications = e.getValue();
+                        ClassificationWithDuration c = new ClassificationWithDuration();
 
-                    // set first and last timestamp
-                    c.setTimestampFirst(classifications1.get(0).getTimestamp());
-                    c.setTimestampLast(classifications1.get(classifications1.size() - 1).getTimestamp());
+                        // set first and last timestamp
+                        c.setTimestampFirst(classifications.get(0).getTimestamp());
+                        c.setTimestampLast(classifications.get(classifications.size() - 1).getTimestamp());
 
-                    // set personId
-                    c.setPersonId(classifications1.get(0).getPersonId());
+                        // set personId
+                        c.setPersonId(classifications.get(0).getPersonId());
 
-                    // set device
-                    c.setDeviceId(classifications1.get(0).getDevice().getId());
+                        // set device
+                        c.setDeviceId(classifications.get(0).getDevice().getId());
 
-                    // count of classifications
-                    c.setClassificationCount(classifications1.size());
+                        // count of classifications
+                        c.setClassificationCount(classifications.size());
 
-                    // average age
-                    double averageAge = classifications1.stream()
-                        .mapToDouble(i -> (double) i.getAge())
-                        .average().getAsDouble();
-                    c.setAge((int) averageAge);
+                        // average age
+                        double averageAge = classifications.stream()
+                            .mapToDouble(i -> (double) i.getAge())
+                            .average().orElse(-1);
+                        c.setAge((int) averageAge);
 
-                    // most common gender
-                    Gender mostCommonGender = classifications1.stream()
-                        .collect(Collectors.groupingBy(s -> s.getGender(), Collectors.counting()))
-                        .entrySet()
-                        .stream()
-                        .max(Comparator.comparing(Map.Entry::getValue))
-                        .get().getKey();
-                    c.setGender(mostCommonGender);
+                        // most common gender
+                        Gender mostCommonGender = getMostCommonInClassification(classifications, Classification::getGender);
+                        c.setGender(mostCommonGender);
 
-                    // most common emotion
-                    Emotion mostCommonEmotion = classifications1.stream()
-                        .collect(Collectors.groupingBy(s -> s.getEmotion(), Collectors.counting()))
-                        .entrySet()
-                        .stream()
-                        .max(Comparator.comparing(Map.Entry::getValue))
-                        .get().getKey();
-                    c.setEmotion(mostCommonEmotion);
+                        // most common emotion
+                        Emotion mostCommonEmotion = getMostCommonInClassification(classifications, Classification::getEmotion);
+                        c.setEmotion(mostCommonEmotion);
 
-                    return c;
-                })
-            ).values());
+                        return c;
+                    })
+                ).values());
+    }
+
+    private static <A,B> B getMostCommonInClassification(List<A> classifications, Function<A,B> f){
+        return classifications.stream()
+            .collect(Collectors.groupingBy(f1 -> f.apply(f1), Collectors.counting()))
+            .entrySet()
+            .stream()
+            .max(Comparator.comparing(Map.Entry::getValue))
+            .get().getKey();
     }
 }

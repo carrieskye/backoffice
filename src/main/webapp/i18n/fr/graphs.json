@@ -16,6 +16,10 @@
                     "age-distribution": "Répartition par âge",
                     "demo": "Démo"
                 }
+            },
+            "options": {
+                "store": "Magasin",
+                "chart-type": "Type de graphique"
             }
         }
     }

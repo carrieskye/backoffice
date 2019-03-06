@@ -16,12 +16,16 @@ export class ActivityComponent implements OnInit {
     graphLoading = false;
 
     interval = 15;
+
     devices: IDevice[];
     selectedDevice: IDevice;
 
+    chartTypes = [{ type: 'line', name: 'Line chart' }, { type: 'bar', name: 'Bar Chart' }];
+    selectedChartType = this.chartTypes[0];
+
     activitiesLabels: string[] = [];
     activitiesData: any[] = [{ data: [], label: 'F' }, { data: [], label: 'M' }];
-    activitiesChartType = 'line';
+    activitiesChartType = this.selectedChartType.type;
     activitiesLegend = true;
     activitiesOptions: any = { scaleShowVerticalLines: false, responsive: true };
 
@@ -55,6 +59,7 @@ export class ActivityComponent implements OnInit {
     }
 
     updateTable() {
+        this.graphLoading = true;
         this.activitiesLabels = [];
         this.activityService.query(this.selectedDevice.id, this.interval).subscribe(
             result => {
@@ -85,8 +90,13 @@ export class ActivityComponent implements OnInit {
     }
 
     selectStore(device: IDevice) {
-        this.graphLoading = true;
         this.selectedDevice = device;
+        this.updateTable();
+    }
+
+    selectChartType(chartType) {
+        this.selectedChartType = chartType;
+        this.activitiesChartType = this.selectedChartType.type;
         this.updateTable();
     }
 

@@ -1,13 +1,35 @@
 <div class="graph">
     <div *ngIf="!devicesLoading; else loadingDiv">
-        <div ngbDropdown *ngIf="selectedDevice" style="margin-bottom:1rem">
-            <button class="btn btn-outline-default" id="dropdownStores" ngbDropdownToggle>
-                {{selectedDevice.postalCode}} - {{selectedDevice.name}}
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownStores">
-                <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
-                    {{device.postalCode}} - {{device.name}}
+        <div style="text-align:right">
+            <div class="btn-group mr-3">
+                <button type="button" class="btn btn-outline-default" disabled>
+                    <span jhiTranslate="backofficeApp.graphs.options.store">Store</span>
                 </button>
+                <div ngbDropdown *ngIf="selectedDevice">
+                    <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
+                        {{selectedDevice.postalCode}} - {{selectedDevice.name}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownStores">
+                        <button class="dropdown-item" *ngFor="let device of devices" (click)="selectStore(device)">
+                            {{device.postalCode}} - {{device.name}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group mr-3">
+                <button type="button" class="btn btn-outline-default" disabled>
+                    <span jhiTranslate="backofficeApp.graphs.options.chart-type">Chart type</span>
+                </button>
+                <div ngbDropdown *ngIf="selectedDevice">
+                    <button class="btn btn-outline-primary" id="dropdownChartType" ngbDropdownToggle>
+                        {{selectedChartType.name}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownChartType">
+                        <button class="dropdown-item" *ngFor="let chartType of chartTypes" (click)="selectChartType(chartType)">
+                            {{chartType.name}}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -19,7 +41,7 @@
                             [labels]="activitiesLabels"
                             [options]="activitiesOptions"
                             [legend]="activitiesLegend"
-                            [chartType]="activitiesChartType"></canvas>
+                            [chartType]="selectedChartType.type"></canvas>
                 </div>
             </div>
         </div>

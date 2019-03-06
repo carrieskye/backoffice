@@ -16,6 +16,10 @@
                     "age-distribution": "Age distribution",
                     "demo": "Demo"
                 }
+            },
+            "options": {
+                "store": "Store",
+                "chart-type": "Chart type"
             }
         }
     }

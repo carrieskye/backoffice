@@ -16,6 +16,10 @@
                     "age-distribution": "Leeftijdsverdeling",
                     "demo": "Demo"
                 }
+            },
+            "options": {
+                "store": "Winkel",
+                "chart-type": "Soort grafiek"
             }
         }
     }

@@ -8,14 +8,12 @@ import { IAgeDistribution } from 'app/shared/model/age-distribution.model';
     providedIn: 'root'
 })
 export class AgeDistributionService {
-    public resourceUrl = SERVER_API_URL + 'api/statistics/agedistribution';
+    public resourceUrl = SERVER_API_URL + 'api/statistics/activity/age';
 
     constructor(protected http: HttpClient) {}
 
-    query(start: Date, end: Date, interval?: number): Observable<any> {
+    query(interval?: number): Observable<any> {
         let url = this.resourceUrl;
-        url += '?start=' + ('0' + start.getDate()).slice(-2) + ('0' + (start.getMonth() + 1)).slice(-2) + start.getFullYear();
-        url += '&end=' + ('0' + end.getDate()).slice(-2) + ('0' + (end.getMonth() + 1)).slice(-2) + end.getFullYear();
         url += interval ? '&interval=' + interval : '';
 
         return this.http.get<IAgeDistribution[]>(url, { observe: 'body' });

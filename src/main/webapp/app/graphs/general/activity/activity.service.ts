@@ -9,7 +9,7 @@ import { IActivity } from 'app/shared/model/activity.model';
     providedIn: 'root'
 })
 export class ActivityService {
-    public resourceUrl = SERVER_API_URL + 'api/statistics/activity';
+    public resourceUrl = SERVER_API_URL + 'api/statistics/activity/gender';
 
     constructor(protected http: HttpClient) {}
 

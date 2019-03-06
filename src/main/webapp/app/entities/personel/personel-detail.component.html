@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personel">
+            <h2><span jhiTranslate="backofficeApp.personel.detail.title">Personel</span> {{personel.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="backofficeApp.personel.name">Name</span></dt>
+                <dd>
+                    <span>{{personel.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.personel.isIgnored">Is Ignored</span></dt>
+                <dd>
+                    <span>{{personel.isIgnored}}</span>
+                </dd>
+                <dt><span jhiTranslate="backofficeApp.personel.photo">Photo</span></dt>
+                <dd>
+                    <div *ngIf="personel.photo">
+                        <a (click)="openFile(personel.photoContentType, personel.photo)">
+                            <img [src]="'data:' + personel.photoContentType + ';base64,' + personel.photo" style="max-width: 100%;" alt="personel image"/>
+                        </a>
+                        {{personel.photoContentType}}, {{byteSize(personel.photo)}}
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personel', personel.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

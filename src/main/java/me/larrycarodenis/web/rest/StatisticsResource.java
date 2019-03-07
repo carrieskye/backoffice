@@ -6,10 +6,11 @@ import me.larrycarodenis.domain.ClassificationWithDuration;
 import me.larrycarodenis.domain.GenderTotals;
 import me.larrycarodenis.domain.enumeration.Gender;
 import me.larrycarodenis.repository.ClassificationRepository;
+import me.larrycarodenis.repository.PersonelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +30,9 @@ public class StatisticsResource {
 
     private ClassificationRepository classificationRepository;
 
+    @Autowired
+    private PersonelRepository personelRepository;
+
     public StatisticsResource(ClassificationRepository classificationRepository) {
         this.classificationRepository = classificationRepository;
     }
@@ -47,11 +51,9 @@ public class StatisticsResource {
         @RequestParam(required = false, defaultValue = "19:00") LocalTime timeEnd
     ) {
         Map<LocalTime, Map<Integer, Integer>> data = new HashMap<>();
-        // get classifications
-        List<Classification> classifications = store == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(store);
 
-        // group by deviceid & personid
-        List<ClassificationWithDuration> classificationsGrouped = classificationRepository.findAllGrouped(classifications);
+        // get classifications
+        List<ClassificationWithDuration> classificationsGrouped = getClassificationsGrouped(store);
 
         // create intervals
         int amountOfIntervals = (int) Math.ceil(MINUTES.between(timeStart, timeEnd) / interval);
@@ -95,10 +97,7 @@ public class StatisticsResource {
         Map<LocalTime, GenderTotals> data = new HashMap<>();
 
         // get classifications
-        List<Classification> classifications = store == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(store);
-
-        // group by deviceid & personid
-        List<ClassificationWithDuration> classificationsGrouped = classificationRepository.findAllGrouped(classifications);
+        List<ClassificationWithDuration> classificationsGrouped = getClassificationsGrouped(store);
 
         // create intervals
         int amountOfIntervals = (int) Math.ceil(MINUTES.between(timeStart, timeEnd) / interval);
@@ -125,14 +124,19 @@ public class StatisticsResource {
         return data;
     }
 
-    /**
-     * Check if moment is between start and end
-     *
-     * @param moment
-     * @param start
-     * @param end
-     * @return
-     */
+    private List<ClassificationWithDuration> getClassificationsGrouped(Long deviceId){
+        // get list of labels to ignore
+        List<String> ignoredPersonal = personelRepository
+            .getAllByIsIgnored(true)
+            .stream().map(personel -> personel.getName()).collect(Collectors.toList());
+
+        // get classifications
+        List<Classification> classifications = deviceId == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(deviceId);
+
+        // group by deviceid & personid
+        return classificationRepository.findAllGrouped(classifications, ignoredPersonal);
+    }
+
     private boolean isBetween(LocalTime moment, LocalTime start, LocalTime end) {
         return (moment.isAfter(start) && moment.isBefore(end));
     }

@@ -19,6 +19,10 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'classification',
                 loadChildren: './classification/classification.module#BackofficeClassificationModule'
+            },
+            {
+                path: 'personel',
+                loadChildren: './personel/personel.module#BackofficePersonelModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])

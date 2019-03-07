@@ -1,0 +1,23 @@
+{
+    "backofficeApp": {
+        "personel": {
+            "home": {
+                "title": "Personels",
+                "createLabel": "Maak een nieuwe Personel",
+                "createOrEditLabel": "Maak of wijzig een Personel"
+            },
+            "created": "A new Personel is created with identifier {{ param }}",
+            "updated": "A Personel is updated with identifier {{ param }}",
+            "deleted": "A Personel is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Personel {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Personel"
+            },
+            "name": "Name",
+            "isIgnored": "Is Ignored",
+            "photo": "Photo"
+        }
+    }
+}

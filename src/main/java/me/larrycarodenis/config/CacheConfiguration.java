@@ -44,6 +44,7 @@ public class CacheConfiguration {
             cm.createCache(me.larrycarodenis.domain.Slide.class.getName(), jcacheConfiguration);
             cm.createCache(me.larrycarodenis.domain.Slide.class.getName() + ".devices", jcacheConfiguration);
             cm.createCache(me.larrycarodenis.domain.Classification.class.getName(), jcacheConfiguration);
+            cm.createCache(me.larrycarodenis.domain.Personel.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

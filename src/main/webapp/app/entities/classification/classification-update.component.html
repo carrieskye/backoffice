@@ -88,7 +88,7 @@
                     <label class="form-control-label" jhiTranslate="backofficeApp.classification.device" for="field_device">Device</label>
                     <select class="form-control" id="field_device" name="device" [(ngModel)]="classification.device">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="deviceOption.id === classification.device?.id ? classification.device : deviceOption" *ngFor="let deviceOption of devices; trackBy: trackDeviceById">{{deviceOption.id}}</option>
+                        <option [ngValue]="deviceOption.id === classification.device?.id ? classification.device : deviceOption" *ngFor="let deviceOption of devices; trackBy: trackDeviceById">({{deviceOption.postalCode}}) {{deviceOption.name}}</option>
                     </select>
                 </div>
             </div>

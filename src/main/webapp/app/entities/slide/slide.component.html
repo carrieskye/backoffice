@@ -35,7 +35,7 @@
                 <td jhiTranslate="{{'backofficeApp.Gender.' + slide.gender}}">{{slide.gender}}</td>
                 <td>
                     <span *ngFor="let device of slide.devices; let last = last">
-                            <a class="form-control-static" [routerLink]="['../device', device?.id, 'view' ]">{{device.name}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static" [routerLink]="['../device', device?.id, 'view' ]">({{device.postalCode}}) {{device.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

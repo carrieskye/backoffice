@@ -1,82 +1,86 @@
 <div class="graph">
     <div *ngIf="!devicesLoading; else loadingDiv">
-        <div style="text-align:right">
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.store.label">Store</span>
-                </button>
-                <div ngbDropdown *ngIf="selectedDevice">
-                    <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
+        <div *ngIf="!noClassifications; else noClassificationsDiv">
+
+            <div style="text-align:right">
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.store.label">Store</span>
+                    </button>
+                    <div ngbDropdown *ngIf="selectedDevice">
+                        <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
                         <span
                             *ngIf="selectedDevice.postalCode > 0"> {{selectedDevice.postalCode}}
                             - {{selectedDevice.name}}
                         </span>
-                        <span *ngIf="selectedDevice.postalCode ===0"
-                              jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownStores">
-                        <button class="dropdown-item" (click)="selectAllStores()">
-                            <span jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                            <span *ngIf="selectedDevice.postalCode ===0"
+                                  jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
                         </button>
-                        <button class="dropdown-item" *ngFor="let device of deviceOptions"
-                                (click)="selectStore(device)">
-                            {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
-                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownStores">
+                            <button class="dropdown-item" (click)="selectAllStores()">
+                                <span jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                            </button>
+                            <button class="dropdown-item" *ngFor="let device of deviceOptions"
+                                    (click)="selectStore(device)">
+                                {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.time-interval-minutes">Time range</span>
-                </button>
-                <div ngbDropdown>
-                    <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
-                        {{timeInterval}}
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.time-interval-minutes">Time range</span>
                     </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownTimeInterval">
-                        <button class="dropdown-item" *ngFor="let option of timeIntervalOptions"
-                                (click)="selectTimeInterval(option)">
-                            {{option}}
+                    <div ngbDropdown>
+                        <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
+                            {{timeInterval}}
                         </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownTimeInterval">
+                            <button class="dropdown-item" *ngFor="let option of timeIntervalOptions"
+                                    (click)="selectTimeInterval(option)">
+                                {{option}}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.chart-type.label">Chart type</span>
-                </button>
-                <div ngbDropdown *ngIf="selectedDevice">
-                    <button class="btn btn-outline-primary" id="dropdownChartType" ngbDropdownToggle>
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.chart-type.label">Chart type</span>
+                    </button>
+                    <div ngbDropdown *ngIf="selectedDevice">
+                        <button class="btn btn-outline-primary" id="dropdownChartType" ngbDropdownToggle>
                         <span *ngIf="activitiesChartType==='bar'"
                               jhiTranslate="backofficeApp.graphs.options.chart-type.bar-chart">Bar chart
                         </span>
-                        <span *ngIf="activitiesChartType==='line'"
-                              jhiTranslate="backofficeApp.graphs.options.chart-type.line-chart">Line chart
+                            <span *ngIf="activitiesChartType==='line'"
+                                  jhiTranslate="backofficeApp.graphs.options.chart-type.line-chart">Line chart
                         </span>
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownChartType">
-                        <button class="dropdown-item" (click)="selectChartType('bar')">
-                            <span jhiTranslate="backofficeApp.graphs.options.chart-type.bar-chart">Bar chart</span>
                         </button>
-                        <button class="dropdown-item" (click)="selectChartType('line')">
-                            <span jhiTranslate="backofficeApp.graphs.options.chart-type.line-chart">Line chart</span>
-                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownChartType">
+                            <button class="dropdown-item" (click)="selectChartType('bar')">
+                                <span jhiTranslate="backofficeApp.graphs.options.chart-type.bar-chart">Bar chart</span>
+                            </button>
+                            <button class="dropdown-item" (click)="selectChartType('line')">
+                                <span
+                                    jhiTranslate="backofficeApp.graphs.options.chart-type.line-chart">Line chart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row" *ngIf="!graphLoading; else loadingDiv">
-            <div class="col-md-12">
-                <div style="display: block">
-                    <canvas baseChart height="100"
-                            [datasets]="activitiesData"
-                            [labels]="activitiesLabels"
-                            [options]="activitiesOptions"
-                            [legend]="activitiesLegend"
-                            [chartType]="activitiesChartType"></canvas>
+            <div class="row" *ngIf="!graphLoading; else loadingDiv">
+                <div class="col-md-12">
+                    <div style="display: block;margin-top:1.5rem;">
+                        <canvas baseChart height="100"
+                                [datasets]="activitiesData"
+                                [labels]="activitiesLabels"
+                                [options]="activitiesOptions"
+                                [legend]="activitiesLegend"
+                                [chartType]="activitiesChartType"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,5 +89,9 @@
     <ng-template #loadingDiv>
         <span jhiTranslate="global.messages.loading">Loading...</span>
         <div class="spinner"></div>
+    </ng-template>
+
+    <ng-template #noClassificationsDiv>
+        <span jhiTranslate="global.messages.no-classifications">There are no classifications, so the graphs cannot be shown.</span>
     </ng-template>
 </div>

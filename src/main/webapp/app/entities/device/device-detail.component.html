@@ -16,7 +16,7 @@
                 <dt><span jhiTranslate="backofficeApp.device.homepage">Homepage</span></dt>
                 <dd>
                     <div *ngIf="device.homepage">
-                        <a [routerLink]="['/home-page', device.homepage?.id, 'view']">{{device.homepage?.id}}</a>
+                        <a [routerLink]="['/home-page', device.homepage?.id, 'view']">{{device.homepage?.name}}</a>
                     </div>
                 </dd>
             </dl>

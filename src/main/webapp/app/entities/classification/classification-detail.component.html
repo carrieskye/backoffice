@@ -28,7 +28,7 @@
                 <dt><span jhiTranslate="backofficeApp.classification.device">Device</span></dt>
                 <dd>
                     <div *ngIf="classification.device">
-                        <a [routerLink]="['/device', classification.device?.id, 'view']">{{classification.device?.id}}</a>
+                        <a [routerLink]="['/device', classification.device?.id, 'view']">({{classification.device?.postalCode}}) {{classification.device?.name}}</a>
                     </div>
                 </dd>
             </dl>

@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "Back Office",
+        "title": "AI Back Office",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
@@ -88,7 +88,8 @@
                     "invalid": "Votre email n'est pas valide."
                 }
             },
-            "loading": "Charger..."
+            "loading": "Charger...",
+            "no-classifications": "Il n'y a pas assez de classifications, les graphiques ne peuvent donc pas être affichés."
         },
         "field": {
             "id": "ID"

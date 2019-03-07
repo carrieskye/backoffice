@@ -34,7 +34,7 @@
                 <td jhiTranslate="{{'backofficeApp.Emotion.' + classification.emotion}}">{{classification.emotion}}</td>
                 <td>
                     <div *ngIf="classification.device">
-                        <a [routerLink]="['../device', classification.device?.id, 'view' ]" >{{classification.device?.id}}</a>
+                        <a [routerLink]="['../device', classification.device?.id, 'view' ]" >({{classification.device?.postalCode}}) {{classification.device?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

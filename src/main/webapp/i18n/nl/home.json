@@ -1,9 +1,32 @@
 {
     "home": {
+        "welcome": "Welkom",
         "title": "Welkom, Java Hipster!",
-        "subtitle": "Dit is uw startpagina",
+        "hi-guest": "Dag bezoeker!",
+        "subtitle": "Enkele cijfers voor u:",
         "logged": {
             "message": "U bent aangemeld als gebruiker \"{{username}}\"."
+        },
+        "request-access": "Gelieve aan account aan te vragen om toegang te krijgen tot de back office.",
+        "numbers": {
+            "devices": {
+                "no": "Geen toestellen",
+                "one": "toestel",
+                "many": "toestellen"
+            },
+            "people-detected": {
+                "no": "Geen personen herkend",
+                "one": "persoon herkend",
+                "many": "personen herkend"
+            },
+            "classifications": {
+                "no": "Geen classificaties",
+                "one": "classificatie",
+                "many": "classificaties"
+            },
+            "average-age": "Gemiddelde leeftijd van",
+            "female": "vrouwelijk",
+            "male": "mannelijk"
         },
         "question": "Indien u vragen hebt over JHipster:",
         "link": {

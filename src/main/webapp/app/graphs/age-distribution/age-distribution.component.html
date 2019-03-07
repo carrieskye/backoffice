@@ -1,110 +1,112 @@
 <div class="graph">
     <div *ngIf="!devicesLoading; else loadingDiv">
-        <div style="text-align:right">
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.store.label">Store</span>
-                </button>
-                <div ngbDropdown *ngIf="selectedDevice">
-                    <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
+        <div *ngIf="!noClassifications; else noClassificationsDiv">
+            <div style="text-align:right">
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.store.label">Store</span>
+                    </button>
+                    <div ngbDropdown *ngIf="selectedDevice">
+                        <button class="btn btn-outline-primary" id="dropdownStores" ngbDropdownToggle>
                         <span
                             *ngIf="selectedDevice.postalCode > 0"> {{selectedDevice.postalCode}}
                             - {{selectedDevice.name}}
                         </span>
-                        <span *ngIf="selectedDevice.postalCode ===0"
-                              jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                            <span *ngIf="selectedDevice.postalCode ===0"
+                                  jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownStores">
+                            <button class="dropdown-item" (click)="selectAllStores()">
+                                <span jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                            </button>
+                            <button class="dropdown-item" *ngFor="let device of deviceOptions"
+                                    (click)="selectStore(device)">
+                                {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.age-interval">Age range</span>
                     </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownStores">
-                        <button class="dropdown-item" (click)="selectAllStores()">
-                            <span jhiTranslate="backofficeApp.graphs.options.store.all">All</span>
+                    <div ngbDropdown>
+                        <button class="btn btn-outline-primary" id="dropdownAge" ngbDropdownToggle>
+                            {{ageInterval}}
                         </button>
-                        <button class="dropdown-item" *ngFor="let device of deviceOptions"
-                                (click)="selectStore(device)">
-                            {{device.postalCode > 0 ? device.postalCode + ' - ' : ''}}{{device.name}}
+                        <div ngbDropdownMenu aria-labelledby="dropdownAge">
+                            <button class="dropdown-item" *ngFor="let option of ageIntervalOptions"
+                                    (click)="selectAgeInterval(option)">
+                                {{option}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.time-interval-hours">Time range</span>
+                    </button>
+                    <div ngbDropdown>
+                        <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
+                            {{timeInterval}}
                         </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownTimeInterval">
+                            <button class="dropdown-item" *ngFor="let option of timeIntervalOptions"
+                                    (click)="selectTimeInterval(option)">
+                                {{option}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.start-time">Start time</span>
+                    </button>
+                    <div ngbDropdown>
+                        <button class="btn btn-outline-primary" id="dropdownStartTime" ngbDropdownToggle>
+                            {{startTime}}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownStartTime">
+                            <button class="dropdown-item" *ngFor="let option of startTimeOptions"
+                                    (click)="selectStartTime(option)">
+                                {{option}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-outline-default" disabled>
+                        <span jhiTranslate="backofficeApp.graphs.options.end-time">End time</span>
+                    </button>
+                    <div ngbDropdown>
+                        <button class="btn btn-outline-primary" id="dropdownEndTime" ngbDropdownToggle>
+                            {{endTime}}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownEndTime">
+                            <button class="dropdown-item" *ngFor="let option of endTimeOptions"
+                                    (click)="selectEndTime(option)">
+                                {{option}}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.age-interval">Age range</span>
-                </button>
-                <div ngbDropdown>
-                    <button class="btn btn-outline-primary" id="dropdownAge" ngbDropdownToggle>
-                        {{ageInterval}}
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownAge">
-                        <button class="dropdown-item" *ngFor="let option of ageIntervalOptions"
-                                (click)="selectAgeInterval(option)">
-                            {{option}}
-                        </button>
+            <div class="row" *ngIf="!graphLoading; else loadingDiv">
+                <div class="col-md-4" *ngFor="let data of ageDistributionData; let pieIndex = index"
+                     style="margin-top:4rem;">
+                    <h3 style="text-align:center;">{{timeIntervalLabels[pieIndex]}}</h3>
+                    <div style="display: block">
+                        <canvas baseChart
+                                [data]="ageDistributionData[pieIndex]"
+                                [labels]="ageDistributionLabels"
+                                [chartType]="ageDistributionChartType"
+                                [legend]="ageDistributionLegend"></canvas>
                     </div>
-                </div>
-            </div>
-
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.time-interval-hours">Time range</span>
-                </button>
-                <div ngbDropdown>
-                    <button class="btn btn-outline-primary" id="dropdownTimeInterval" ngbDropdownToggle>
-                        {{timeInterval}}
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownTimeInterval">
-                        <button class="dropdown-item" *ngFor="let option of timeIntervalOptions"
-                                (click)="selectTimeInterval(option)">
-                            {{option}}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.start-time">Start time</span>
-                </button>
-                <div ngbDropdown>
-                    <button class="btn btn-outline-primary" id="dropdownStartTime" ngbDropdownToggle>
-                        {{startTime}}
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownStartTime">
-                        <button class="dropdown-item" *ngFor="let option of startTimeOptions"
-                                (click)="selectStartTime(option)">
-                            {{option}}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="btn-group mr-3">
-                <button type="button" class="btn btn-outline-default" disabled>
-                    <span jhiTranslate="backofficeApp.graphs.options.end-time">End time</span>
-                </button>
-                <div ngbDropdown>
-                    <button class="btn btn-outline-primary" id="dropdownEndTime" ngbDropdownToggle>
-                        {{endTime}}
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownEndTime">
-                        <button class="dropdown-item" *ngFor="let option of endTimeOptions"
-                                (click)="selectEndTime(option)">
-                            {{option}}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row" *ngIf="!graphLoading; else loadingDiv">
-            <div class="col-md-4" *ngFor="let data of ageDistributionData; let pieIndex = index"
-                 style="margin-top:5rem;">
-                <h3 style="text-align:center;">{{timeIntervalLabels[pieIndex]}}</h3>
-                <div style="display: block">
-                    <canvas baseChart
-                            [data]="ageDistributionData[pieIndex]"
-                            [labels]="ageDistributionLabels"
-                            [chartType]="ageDistributionChartType"
-                            [legend]="ageDistributionLegend"></canvas>
                 </div>
             </div>
         </div>
@@ -113,6 +115,10 @@
     <ng-template #loadingDiv>
         <span jhiTranslate="global.messages.loading">Loading...</span>
         <div class="spinner"></div>
+    </ng-template>
+
+    <ng-template #noClassificationsDiv>
+        <span jhiTranslate="global.messages.no-classifications">There are no classifications, so the graphs cannot be shown.</span>
     </ng-template>
 </div>
 

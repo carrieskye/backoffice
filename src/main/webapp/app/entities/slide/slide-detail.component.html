@@ -25,7 +25,7 @@
                 <dt><span jhiTranslate="backofficeApp.slide.device">Device</span></dt>
                 <dd>
                     <span *ngFor="let device of slide.devices; let last = last">
-                        <a [routerLink]="['/device', device?.id, 'view' ]">{{device.id}}</a>{{last ? '' : ', '}}
+                        <a [routerLink]="['/device', device?.id, 'view' ]">({{device.postalCode}}) {{device.name}}</a>{{last ? '' : ', '}}
                     </span>
                 </dd>
             </dl>

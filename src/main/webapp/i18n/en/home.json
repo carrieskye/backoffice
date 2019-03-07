@@ -2,9 +2,31 @@
     "home": {
         "welcome": "Welcome",
         "title": "Backoffice",
-        "subtitle": "This is your homepage",
+        "hi-guest": "Hi guest!",
+        "subtitle": "Some numbers for you:",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
+        },
+        "request-access": "Please request an account to access the back office.",
+        "numbers": {
+            "devices": {
+                "no": "No devices",
+                "one": "device",
+                "many": "devices"
+            },
+            "people-detected": {
+                "no": "No people detected",
+                "one": "person detected",
+                "many": "people detected"
+            },
+            "classifications": {
+                "no": "No classifications",
+                "one": "classification",
+                "many": "classifications"
+            },
+            "average-age": "Average age of",
+            "female": "female",
+            "male": "male"
         },
         "question": "If you have any question on JHipster:",
         "link": {

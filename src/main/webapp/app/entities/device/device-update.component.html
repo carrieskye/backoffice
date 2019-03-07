@@ -40,7 +40,7 @@
                     <label class="form-control-label" jhiTranslate="backofficeApp.device.homepage" for="field_homepage">Homepage</label>
                     <select class="form-control" id="field_homepage" name="homepage" [(ngModel)]="device.homepage" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="homePageOption.id === device.homepage?.id ? device.homepage : homePageOption" *ngFor="let homePageOption of homepages; trackBy: trackHomePageById">{{homePageOption.id}}</option>
+                        <option [ngValue]="homePageOption.id === device.homepage?.id ? device.homepage : homePageOption" *ngFor="let homePageOption of homepages; trackBy: trackHomePageById">{{homePageOption.name}}</option>
                     </select>
                 </div>
             </div>

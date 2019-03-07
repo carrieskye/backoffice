@@ -12,6 +12,8 @@ import { DeviceService } from 'app/entities/device';
     styleUrls: ['../graphs.scss']
 })
 export class ActivityComponent implements OnInit {
+    noClassifications = false;
+
     devicesLoading = false;
     graphLoading = false;
 
@@ -60,9 +62,11 @@ export class ActivityComponent implements OnInit {
     updateTable() {
         this.graphLoading = true;
         this.activitiesLabels = [];
-        const numberOfStores = this.selectedDevice.id === -1 ? this.deviceOptions.length - 1 : 1;
+        const numberOfStores = this.selectedDevice.id === -1 ? this.deviceOptions.length : 1;
         this.activityService.query(this.selectedDevice.id, this.timeInterval).subscribe(
             result => {
+                this.noClassifications = true;
+
                 const keys = Object.keys(result).sort();
 
                 const maleData = [];
@@ -79,8 +83,15 @@ export class ActivityComponent implements OnInit {
                         }
                     }
 
-                    maleData.push(Math.round(result[key]['m'] / numberOfStores));
-                    femaleData.push(Math.round(result[key]['f'] / numberOfStores));
+                    const males = Math.round(result[key]['m'] / numberOfStores);
+                    const females = Math.round(result[key]['f'] / numberOfStores);
+
+                    if (males > 0 || females > 0) {
+                        this.noClassifications = false;
+                    }
+
+                    maleData.push(males);
+                    femaleData.push(females);
                 });
 
                 this.activitiesData = [{ data: femaleData, label: 'F' }, { data: maleData, label: 'M' }];

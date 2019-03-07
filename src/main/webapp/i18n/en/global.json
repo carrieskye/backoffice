@@ -88,7 +88,8 @@
                     "maxlength": "Your email cannot be longer than 50 characters."
                 }
             },
-            "loading": "Loading..."
+            "loading": "Loading...",
+            "no-classifications": "There are not enough classifications, so the graphs cannot be shown."
         },
         "field": {
             "id": "ID"

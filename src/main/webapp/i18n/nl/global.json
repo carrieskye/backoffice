@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "Back Office",
+        "title": "AI Back Office",
         "browsehappy": "U gebruikt een <strong>verouderde</strong> browser. <a href=\"http://browsehappy.com/?locale=en\">upgrade uw browser</a> om de bruikbaarheid te verbeteren.",
         "menu": {
             "home": "Startpagina",
@@ -88,7 +88,8 @@
                     "maxlength": "Uw email kan niet langer zijn dan 50 tekens."
                 }
             },
-            "loading": "Laden..."
+            "loading": "Laden...",
+            "no-classifications": "Er zijn niet genoeg classificaties, dus de grafieken kunnen niet getoond worden."
         },
         "field": {
             "id": "ID"

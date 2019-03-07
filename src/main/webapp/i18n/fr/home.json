@@ -1,9 +1,32 @@
 {
     "home": {
+        "welcome": "Bienvenue",
         "title": "Bienvenue, Java Hipster !",
-        "subtitle": "Ceci est votre page d'accueil",
+        "hi-guest": "Bonjour visiteur!",
+        "subtitle": "Quelques chiffres pour vous:",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
+        },
+        "request-access": "Veuillez demander un compte pour accéder au back office.",
+        "numbers": {
+            "devices": {
+                "no": "Pas d'appareils",
+                "one": "appareil",
+                "many": "appareils"
+            },
+            "people-detected": {
+                "no": "Pas de personnes détectées",
+                "one": "personne détectée",
+                "many": "personnes détectées"
+            },
+            "classifications": {
+                "no": "Pas de classifications",
+                "one": "classification",
+                "many": "classifications"
+            },
+            "average-age": "Âge moyen de",
+            "female": "féminin",
+            "male": "masculin"
         },
         "question": "Si vous avez des questions à propos de JHipster :",
         "link": {

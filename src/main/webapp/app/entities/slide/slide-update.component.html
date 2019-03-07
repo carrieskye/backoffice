@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label jhiTranslate="backofficeApp.slide.device" for="field_device">Device</label>
                     <select class="form-control" id="field_device" multiple name="device" [(ngModel)]="slide.devices">
-                        <option [ngValue]="getSelected(slide.devices, deviceOption)" *ngFor="let deviceOption of devices; trackBy: trackDeviceById">{{deviceOption.id}}</option>
+                        <option [ngValue]="getSelected(slide.devices, deviceOption)" *ngFor="let deviceOption of devices; trackBy: trackDeviceById">({{deviceOption.postalCode}}) {{deviceOption.name}}</option>
                     </select>
                 </div>
             </div>

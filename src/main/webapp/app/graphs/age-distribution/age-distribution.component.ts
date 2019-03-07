@@ -12,6 +12,8 @@ import { AgeDistributionService } from 'app/graphs/age-distribution/age-distribu
     styleUrls: ['../graphs.scss']
 })
 export class AgeDistributionComponent implements OnInit {
+    noClassifications = false;
+
     devicesLoading = false;
     graphLoading = false;
 
@@ -68,12 +70,14 @@ export class AgeDistributionComponent implements OnInit {
         this.graphLoading = true;
         this.ageDistributionLabels = [];
 
-        const numberOfStores = this.selectedDevice.id === -1 ? this.deviceOptions.length - 1 : 1;
+        const numberOfStores = this.selectedDevice.id === -1 ? this.deviceOptions.length : 1;
 
         this.ageDistributionService
             .query(this.selectedDevice.id, this.timeInterval * 60, this.ageInterval, this.startTime, this.endTime)
             .subscribe(
                 result => {
+                    this.noClassifications = true;
+
                     const keys = Object.keys(result).sort();
                     const labels = Object.keys(result[keys[0]]);
 
@@ -97,7 +101,11 @@ export class AgeDistributionComponent implements OnInit {
                         data[timeIndex] = [];
                         labels.forEach(() => data[timeIndex].push(0));
                         Object.keys(result[key]).forEach((category, categoryIndex) => {
-                            data[timeIndex][categoryIndex] += Math.round(result[key][category] / numberOfStores);
+                            const count = Math.round(result[key][category] / numberOfStores);
+                            if (count > 0) {
+                                this.noClassifications = false;
+                            }
+                            data[timeIndex][categoryIndex] += count;
                         });
                     });
 

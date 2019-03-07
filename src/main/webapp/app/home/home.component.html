@@ -4,48 +4,79 @@
             <span jhiTranslate="home.welcome">Welcome</span>
             {{account.login}}!
         </h1>
-        <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
+        <p class="lead" jhiTranslate="home.subtitle">Some numbers for you:</p>
     </div>
 
     <div class="col-md-2 text-center">
-        <div class="icon"><fa-icon icon="tv"></fa-icon></div>
-        {{metrics.numberOfDevices}} devices
-        <!-- TODO: this ng-pluralize is not working :( -->
-        <ng-pluralize count="metrics.numberOfDevices"
-                      when="{
-                      '0': 'No devices',
-                     'one': '1 device',
-                     'other': '{} devices'
-                     }">
-        </ng-pluralize>
+        <div class="icon">
+            <fa-icon icon="tv"></fa-icon>
+        </div>
+        <div *ngIf="metrics.numberOfDevices === 0"><span
+            jhiTranslate="home.numbers.devices.no">No devices</span>
+        </div>
+        <div *ngIf="metrics.numberOfDevices === 1">
+            1 <span jhiTranslate="home.numbers.devices.one">device</span>
+        </div>
+        <div *ngIf="metrics.numberOfDevices > 1">
+            {{metrics.numberOfDevices}} <span jhiTranslate="home.numbers.devices.many">devices</span>
+        </div>
     </div>
 
     <div class="col-md-2 text-center">
-        <div class="icon"><fa-icon icon="users"></fa-icon></div>
-        {{metrics.distinctCustomers}} people detected
+        <div class="icon">
+            <fa-icon icon="users"></fa-icon>
+        </div>
+        <div *ngIf="metrics.distinctCustomers === 0"><span
+            jhiTranslate="home.numbers.people-detected.no">No people detected</span>
+        </div>
+        <div *ngIf="metrics.distinctCustomers === 1">
+            1 <span jhiTranslate="home.numbers.people-detected.one">person detected</span>
+        </div>
+        <div *ngIf="metrics.distinctCustomers > 1">
+            {{metrics.distinctCustomers}} <span jhiTranslate="home.numbers.people-detected.many">people detected</span>
+        </div>
     </div>
 
     <div class="col-md-2 text-center">
-        <div class="icon"><fa-icon icon="camera"></fa-icon></div>
-        {{metrics.numberOfClassifications}} classifications
+        <div class="icon">
+            <fa-icon icon="camera"></fa-icon>
+        </div>
+        <div *ngIf="metrics.numberOfClassifications === 0"><span
+            jhiTranslate="home.numbers.classifications.no">No classifications</span>
+        </div>
+        <div *ngIf="metrics.numberOfClassifications === 1">
+            1 <span jhiTranslate="home.numbers.classifications.one">classification</span>
+        </div>
+        <div *ngIf="metrics.numberOfClassifications > 1">
+            {{metrics.numberOfClassifications}} <span
+            jhiTranslate="home.numbers.classifications.many">classifications</span>
+        </div>
     </div>
 
     <div class="col-md-2 text-center">
-        <div class="icon"><fa-icon icon="birthday-cake"></fa-icon></div>
-        Average age of {{metrics.averageAge}}
+        <div class="icon">
+            <fa-icon icon="birthday-cake"></fa-icon>
+        </div>
+        <span jhiTranslate="home.numbers.average-age">Average age of</span> {{metrics.averageAge}}
     </div>
 
     <div class="col-md-2 text-center">
-        <div class="icon"><fa-icon icon="venus"></fa-icon></div>
-        {{ratioToFemalePercentage(metrics.femaleRatio)}}% female
+        <div class="icon">
+            <fa-icon icon="venus"></fa-icon>
+        </div>
+        {{ratioToFemalePercentage(metrics.femaleRatio)}}% <span jhiTranslate="home.numbers.female">female</span>
     </div>
 
     <div class="col-md-2 text-center">
-        <div class="icon"><fa-icon icon="mars"></fa-icon></div>
-        {{ratioToMalePercentage(metrics.femaleRatio)}}% male
+        <div class="icon">
+            <fa-icon icon="mars"></fa-icon>
+        </div>
+        {{ratioToMalePercentage(metrics.femaleRatio)}}% <span jhiTranslate="home.numbers.male">male</span>
     </div>
 </div>
 <div class="row" *ngIf="!isAuthenticated()">
-    <h1 class="display-4">Hi Guest!</h1>
-    <p>Please request an account to access the back office</p>
+    <div class="col-md-12">
+        <h1 class="display-4" jhiTranslate="home.hi-guest">Hi Guest!</h1>
+        <span jhiTranslate="home.request-access">Please request an account to access the back office.</span>
+    </div>
 </div>

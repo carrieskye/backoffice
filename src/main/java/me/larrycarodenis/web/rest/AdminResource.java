@@ -7,6 +7,8 @@ import me.larrycarodenis.domain.enumeration.Gender;
 import me.larrycarodenis.repository.ClassificationRepository;
 import me.larrycarodenis.repository.DeviceRepository;
 import me.larrycarodenis.repository.IpRepository;
+import me.larrycarodenis.repository.PersonelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,41 +28,60 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminResource {
 
+    @Autowired
     private ClassificationRepository classificationRepository;
+
+    @Autowired
     private DeviceRepository deviceRepository;
 
-    public AdminResource(ClassificationRepository classificationRepository, DeviceRepository deviceRepository)
-    {
-        this.classificationRepository = classificationRepository;
-        this.deviceRepository = deviceRepository;
-    }
-
+    @Autowired
+    private PersonelRepository personelRepository;
 
     @GetMapping("/metrics")
     public Metrics getMetrics()
     {
         Metrics metrics = new Metrics();
 
+        // get list of labels to ignore
+        List<String> ignoredPersonal = personelRepository
+            .getAllByIsIgnored(true)
+            .stream().map(personel -> personel.getName()).collect(Collectors.toList());
+
         // Last classification
         metrics.setLastClassification(classificationRepository.findTopByOrderByIdDesc());
 
+        // get all classifications
+        List<Classification> classifications = classificationRepository.findAll().stream()
+            .filter(classification -> !ignoredPersonal.contains(classification.getPersonId()))
+            .collect(Collectors.toList());
+
         // counts
-        int numberOfClassifications = (int)classificationRepository.count();
+        int numberOfClassifications = classifications.size();
         int numberOfDevices = (int)deviceRepository.count();
         metrics.setNumberOfClassifications(numberOfClassifications);
         metrics.setNumberOfDevices(numberOfDevices);
 
         // ratio female/total
-        long females = classificationRepository.countByGender(Gender.FEMALE);
-        long males = classificationRepository.countByGender(Gender.MALE);
+        long females = classifications.stream()
+            .filter(classification -> classification.getGender().equals(Gender.FEMALE))
+            .collect(Collectors.counting());
+
+        long males = classifications.stream()
+            .filter(classification -> classification.getGender().equals(Gender.MALE))
+            .collect(Collectors.counting());
+
         double ratio =  (double)females / (females + males);
         metrics.setFemaleRatio(ratio);
 
         // average age
-        metrics.setAverageAge((int) classificationRepository.averageAge());
+        double averageAge = classifications.stream()
+            .mapToDouble(i -> (double) i.getAge())
+            .average().orElse(-1);
+        metrics.setAverageAge((int) averageAge);
 
         // distinct customers
         long distinctCustomers = classificationRepository.findAll().stream()
+            .filter(classification -> !ignoredPersonal.contains(classification.getPersonId()))
             .filter(distinctByKey(classification -> classification.getPersonId() + classification.getDevice().getId()))
             .collect(Collectors.counting());
         metrics.setDistinctCustomers((int)distinctCustomers);

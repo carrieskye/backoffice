@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ClassificationRepositoryCustom {
-        List<ClassificationWithDuration> findAllGrouped(List<Classification> classifications);
+    List<ClassificationWithDuration> findAllGrouped(List<Classification> classifications, List<String> ignoredLabels);
+    List<ClassificationWithDuration> findAllGrouped(List<Classification> classifications);
 }

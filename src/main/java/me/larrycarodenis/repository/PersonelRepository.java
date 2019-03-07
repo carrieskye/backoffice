@@ -4,6 +4,8 @@ import me.larrycarodenis.domain.Personel;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * Spring Data  repository for the Personel entity.
@@ -11,5 +13,5 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface PersonelRepository extends JpaRepository<Personel, Long> {
-
+    List<Personel> getAllByIsIgnored(boolean isIgnored);
 }

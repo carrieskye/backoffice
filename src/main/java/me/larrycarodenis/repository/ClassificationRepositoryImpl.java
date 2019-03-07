@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"unused", "unchecked"})
 public class ClassificationRepositoryImpl implements ClassificationRepositoryCustom {
     @Override
-    public List<ClassificationWithDuration> findAllGrouped(List<Classification> originalClassifications) {
+    public List<ClassificationWithDuration> findAllGrouped(List<Classification> originalClassifications, List<String> ignoredLabels) {
         // group by "personId @ deviceId @ yyyy-MM-dd_hh:mm"
         Map<String, List<Classification>> classificationsPerPerson = originalClassifications.stream()
+            .filter(classification -> !ignoredLabels.contains(classification.getPersonId()))
             .collect(Collectors.groupingBy(
                 classification -> classification.getPersonId() + '@'
                     + classification.getDevice().getId() + '@'
@@ -66,6 +67,11 @@ public class ClassificationRepositoryImpl implements ClassificationRepositoryCus
                         return c;
                     })
                 ).values());
+    }
+
+    @Override
+    public List<ClassificationWithDuration> findAllGrouped(List<Classification> originalClassifications) {
+        return findAllGrouped(originalClassifications, new ArrayList<>());
     }
 
     private static <A,B> B getMostCommonInClassification(List<A> classifications, Function<A,B> f){

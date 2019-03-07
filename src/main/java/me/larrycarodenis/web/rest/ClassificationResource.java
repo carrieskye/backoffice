@@ -1,12 +1,15 @@
 package me.larrycarodenis.web.rest;
 import me.larrycarodenis.domain.Classification;
 import me.larrycarodenis.domain.ClassificationWithDuration;
+import me.larrycarodenis.domain.Personel;
 import me.larrycarodenis.repository.ClassificationRepository;
+import me.larrycarodenis.repository.PersonelRepository;
 import me.larrycarodenis.web.rest.errors.BadRequestAlertException;
 import me.larrycarodenis.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Classification.
@@ -29,6 +33,9 @@ public class ClassificationResource {
     private static final String ENTITY_NAME = "classification";
 
     private final ClassificationRepository classificationRepository;
+
+    @Autowired
+    private PersonelRepository personelRepository;
 
     public ClassificationResource(ClassificationRepository classificationRepository) {
         this.classificationRepository = classificationRepository;
@@ -93,7 +100,10 @@ public class ClassificationResource {
     @GetMapping("/classifications/grouped")
     public List<ClassificationWithDuration> getAllPersonClassifications() {
         log.debug("REST request to get all Classifications Grouped");
-        return classificationRepository.findAllGrouped(classificationRepository.findAll());
+        List<String> ignoredPersonal = personelRepository
+            .getAllByIsIgnored(true)
+            .stream().map(personel -> personel.getName()).collect(Collectors.toList());
+        return classificationRepository.findAllGrouped(classificationRepository.findAll(), ignoredPersonal);
     }
 
     /**

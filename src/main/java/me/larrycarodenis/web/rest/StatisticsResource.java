@@ -6,6 +6,8 @@ import me.larrycarodenis.domain.ClassificationWithDuration;
 import me.larrycarodenis.domain.GenderTotals;
 import me.larrycarodenis.domain.enumeration.Gender;
 import me.larrycarodenis.repository.ClassificationRepository;
+import me.larrycarodenis.repository.PersonelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,9 @@ public class StatisticsResource {
     private static int MAX_AGE = 100;
 
     private ClassificationRepository classificationRepository;
+
+    @Autowired
+    private PersonelRepository personelRepository;
 
     public StatisticsResource(ClassificationRepository classificationRepository) {
         this.classificationRepository = classificationRepository;
@@ -120,11 +125,16 @@ public class StatisticsResource {
     }
 
     private List<ClassificationWithDuration> getClassificationsGrouped(Long deviceId){
+        // get list of labels to ignore
+        List<String> ignoredPersonal = personelRepository
+            .getAllByIsIgnored(true)
+            .stream().map(personel -> personel.getName()).collect(Collectors.toList());
+
         // get classifications
         List<Classification> classifications = deviceId == -1 ? classificationRepository.findAll() : classificationRepository.getAllByDevice_Id(deviceId);
 
         // group by deviceid & personid
-        return classificationRepository.findAllGrouped(classifications);
+        return classificationRepository.findAllGrouped(classifications, ignoredPersonal);
     }
 
     private boolean isBetween(LocalTime moment, LocalTime start, LocalTime end) {
